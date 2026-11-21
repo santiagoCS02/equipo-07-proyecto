@@ -1,1 +1,23 @@
 \chapter{Conclusiones y recomendaciones}
+\label{cap:conclusiones}
+
+\section{Conclusiones}
+
+En respuesta a la pregunta de investigación, el consumo energético difiere entre el monolito tradicional y el monolito modular en este banco de pruebas: bajo trabajo fijo, el modular requirió cerca de 4.6\,\% más energía por operación con carga normal (5.1\,\% en energía neta) y cerca de 6.2\,\% más con carga pesada, con intervalos de confianza del 95\,\% que no incluyen el cero. Se rechaza $H_0$ en ambas cargas; la conclusión se limita a este experimento y no implica que una arquitectura sea mejor que otra.
+
+Respecto a los objetivos: (1) se caracterizaron ambas arquitecturas y se estableció su equivalencia funcional y las condiciones de comparación; (2) se midieron la energía, el tiempo, la potencia y la energía por operación, aunque no la utilización de CPU ni el uso de memoria; (3) la comparación mostró diferencias consistentes en las tres pruebas aplicadas; y (4) las implicaciones para la sostenibilidad son que el costo es medible y moderado en términos absolutos, de modo que puede considerarse un criterio más, junto con la mantenibilidad, al decidir el diseño.
+
+La diferencia de energía coincide con la de tiempo y no con la de potencia: el modular no demanda más vatios, sino que tarda más en hacer el mismo trabajo. Esto sugiere que el sobrecosto proviene de trabajo adicional de CPU por operación, hipótesis que no se verificó. Además, la mayor eficiencia por operación con dos hilos es un efecto de la carga y no de la arquitectura.
+
+\section{Recomendaciones y trabajo futuro}
+\label{sec:trabajo-futuro}
+
+\begin{itemize}
+  \item Replicar el experimento con una aplicación real basada en Spring Modulith, con HTTP y base de datos, para evaluar si el efecto se mantiene cuando domina la E/S.
+  \item Variar el peso de la lógica de negocio y más niveles de carga, para caracterizar cuándo el sobrecosto de la arquitectura se diluye.
+  \item Registrar la utilización de CPU y el uso de memoria, y ampliar la medición a más equipos, JDK y configuraciones de recolector de basura.
+  \item Validar RAPL con medición en el enchufe.
+  \item Realizar un perfilado, por ejemplo con JFR o JoularJX~\cite{noureddine2022joular}, para atribuir el sobrecosto a la creación de DTO, el despacho de eventos o las llamadas por interfaz.
+  \item Documentar con cifras completas el flujo PRISMA de la búsqueda de antecedentes mediante una revisión sistemática formal.
+  \item Para los equipos de desarrollo: considerar el costo energético como un criterio más, junto con la mantenibilidad, y medirlo en su propio contexto antes de generalizar cifras de otros estudios.
+\end{itemize}

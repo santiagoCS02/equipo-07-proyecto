@@ -1,0 +1,81 @@
+\chapter{Diseño metodológico}
+\label{cap:diseno}
+
+\section{Enfoque, tipo y diseño}
+
+La investigación es cuantitativa, de tipo experimental y con alcance comparativo explicativo (capítulo~\ref{cap:alcance}). Se emplea un diseño factorial $2\times 2$ en bloques completos aleatorizados: el factor de interés es la arquitectura (monolito tradicional o modular) y el segundo factor es la carga (normal o pesada). La unidad experimental es una corrida independiente, y se obtienen $n = 12$ mediciones por condición, es decir, 48 corridas medidas y 12 mediciones del equipo en reposo.
+
+\section{Objeto de estudio y banco de pruebas}
+\label{sec:banco}
+
+Se construyó un banco de pruebas en Java con dos implementaciones del mismo sistema: una tienda con catálogo, inventario, clientes, pedidos y pagos. Ambas comparten la lógica de negocio (una función de cálculo de precio de código idéntico), los mismos datos iniciales (1000 productos y 500 clientes, con igual inventario) y la misma secuencia determinista de operaciones, definida por semillas fijas. El monolito tradicional usa un esquema compartido en el que un servicio accede directamente a todas las entidades. El monolito modular se organiza en cinco módulos (catálogo, inventario, clientes, pedidos y pagos) con datos privados, interfaces públicas que devuelven DTO inmutables y comunicación mediante eventos internos síncronos (\texttt{OrderPlaced} y \texttt{PaymentRegistered}); los módulos solo se llaman por sus interfaces públicas. Ambos se ejecutan como un único proceso. Esta es una operacionalización propia de la modularidad, que sigue los principios de la sección~\ref{sec:marco-conceptual}.
+
+La unidad de trabajo es una mezcla fija de 70\,\% de consultas de producto, 20\,\% de creación de pedidos y 10\,\% de resúmenes de cliente. La equivalencia funcional se verifica automáticamente antes de medir: con un hilo, ambas versiones producen el mismo resultado y el mismo estado final (columna \textit{checksum} de los datos).
+
+\section{Operacionalización de variables}
+\label{sec:operacionalizacion}
+
+\begin{table}[htbp]
+\centering
+\caption{Operacionalización de las variables}
+\label{tab:operacionalizacion}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}p{2.8cm}p{6.2cm}p{5.2cm}@{}}
+\toprule
+\textbf{Variable o indicador} & \textbf{Definición operacional} & \textbf{Instrumento y unidad} \\
+\midrule
+Tipo de arquitectura & Monolito tradicional o monolito modular (sección~\ref{sec:banco}) & Dos implementaciones del banco de pruebas \\[3pt]
+Energía total ($E$) & Energía del paquete CPU más la de la DRAM durante la ventana medida & Contadores RAPL; julios (J) \\[3pt]
+Energía por operación & $E$ dividida entre las operaciones realizadas & Cálculo; microjulios por operación ($\mu$J/op) \\[3pt]
+Energía neta & $E$ menos la potencia en reposo del mismo bloque por la duración & Cálculo; $\mu$J/op \\[3pt]
+Tiempo de ejecución & Duración de la ventana para completar el mismo trabajo & Cronómetro del programa; segundos (s) \\[3pt]
+Potencia media & $E$ dividida entre la duración & Cálculo; vatios (W) \\[3pt]
+Carga de trabajo & Número fijo de operaciones por hilo & 1 hilo (normal) o 2 hilos (pesada) \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia.}
+\end{table}
+
+Los indicadores de utilización de CPU y uso de memoria, mencionados en la sección~\ref{sec:indicadores} y en el objetivo específico~2, no se registraron en este experimento. Se declara como limitación (sección~\ref{sec:limitaciones}) y se propone como trabajo futuro (sección~\ref{sec:trabajo-futuro}). La carga de trabajo similar de la sección~\ref{sec:factores} se materializó como trabajo fijo, es decir, el mismo número y la misma secuencia de operaciones en ambas arquitecturas, y no como una tasa de llegada fija.
+
+\section{Instrumentos y entorno}
+\label{sec:instrumentos}
+
+Todo el experimento se realizó en un mismo portátil con procesador Intel Celeron N4020 (dos núcleos), 3.4 GiB de RAM y Arch Linux; la carga y la medición se ejecutaron en el mismo equipo, sin generador externo. La energía se midió con los contadores RAPL (dominios de paquete y DRAM), leídos antes y después de la ventana medida y corrigiendo el desbordamiento del contador~\cite{khan2018rapl}. RAPL no mide pantalla, disco, red ni ventiladores.
+
+Controles del entorno: gobernador de CPU en modo de máximo rendimiento y turbo desactivado; \textit{flags} idénticos de la máquina virtual (\texttt{-Xms256m -Xmx256m -XX:+UseSerialGC}); ninguna otra aplicación en ejecución y escritorio detenido. La tabla~\ref{tab:controlados} resume los factores controlados definidos en la sección~\ref{sec:factores}.
+
+\begin{table}[htbp]
+\centering
+\caption{Factores controlados y su valor en el experimento}
+\label{tab:controlados}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}p{3.6cm}p{10.6cm}@{}}
+\toprule
+\textbf{Factor} & \textbf{Valor en el experimento} \\
+\midrule
+Carga de trabajo & Mismo número y secuencia de operaciones (semillas fijas); 18\,391\,515 operaciones por hilo \\[3pt]
+Hardware & Un solo portátil, sin cambios entre corridas \\[3pt]
+Entorno de ejecución & Mismo sistema operativo, JVM y \textit{flags}; recolector serial \\[3pt]
+Condiciones de operación & JVM nueva por corrida, calentamiento, ventana de 18 a 21 s, pausa de 5 s, orden aleatorio \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia.}
+\end{table}
+
+\section{Procedimiento}
+
+El número de operaciones se calibró automáticamente para que la arquitectura más lenta tardara cerca de 20 s con un hilo: 18\,391\,515 operaciones por hilo, es decir, 18\,391\,515 en total con carga normal y 36\,783\,030 con carga pesada. Se definieron 12 bloques; cada uno contiene una medición en reposo de 15 s, sin la aplicación, y las cuatro condiciones (tradicional y modular, con carga normal y pesada) en orden aleatorio. La aleatorización evita que una posible deriva térmica favorezca siempre a la misma arquitectura. Cada corrida sigue los pasos: (1) iniciar una JVM nueva; (2) ejecutar un calentamiento no medido con el 40\,\% de las operaciones, para estabilizar el compilador \textit{just-in-time}; (3) medir una ventana de 18 a 21 s; (4) esperar 5 s antes de la siguiente corrida. La duración total fue de unos 35 minutos.
+
+\section{Análisis estadístico}
+\label{sec:analisis}
+
+Para cada carga y métrica se calcularon la media y la desviación estándar de cada arquitectura, la diferencia relativa del modular respecto al tradicional, $(\mu_M - \mu_T)/\mu_T \times 100$, y su intervalo de confianza del 95\,\% (Welch). La normalidad de cada grupo se evaluó con la prueba de Shapiro-Wilk~\cite{shapiro1965}. El contraste de $H_0:\ \mu_T = \mu_M$ frente a $H_1:\ \mu_T \neq \mu_M$ se realizó con tres pruebas: la $t$ de Welch~\cite{welch1947}, la $U$ de Mann-Whitney~\cite{mann1947} y la prueba pareada por bloque, y el tamaño del efecto con la $d$ de Cohen~\cite{cohen1988}. Con ello se definen los criterios estadísticos que la sección~\ref{sec:falsabilidad} dejó pendientes: el nivel de significancia es $\alpha = 0.05$, y se rechaza $H_0$ en una carga cuando las pruebas indican diferencia con ese nivel, apoyándose en Mann-Whitney y la prueba pareada si algún grupo no es normal. Dada la baja varianza, la discusión se apoya en la magnitud relativa y su intervalo de confianza, y no en las etiquetas convencionales de la $d$ de Cohen.
+
+\section{Reproducibilidad y consideraciones éticas}
+
+El experimento es reproducible a partir de tres componentes: el banco de pruebas (\texttt{Bench.java}), el \textit{script} de ejecución por bloques (\texttt{correr.sh}) y el de análisis (\texttt{analisis.py}), que se ponen a disposición como material complementario (anexo~A), junto con los datos (\texttt{datos.csv}) y los estadísticos (\texttt{resumen\_estadistico.csv}). El estudio no involucra personas ni datos personales.

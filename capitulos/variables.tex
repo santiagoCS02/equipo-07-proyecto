@@ -1,1 +1,72 @@
 \chapter{Variables}
+\label{cap:variables}
+
+Este capítulo establece las variables que intervienen en la hipótesis, su función dentro del estudio y su significado conceptual. La definición operacional de las variables, así como los instrumentos y procedimientos de medición, corresponden al diseño experimental y se desarrollan en el capítulo~\ref{cap:diseno}.
+
+\section{Clasificación de las variables}
+
+\begin{table}[htbp]
+\centering
+\caption{Variables del proyecto y función que cumplen}
+\label{tab:variables}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}p{4cm}p{3cm}p{7.2cm}@{}}
+\toprule
+\textbf{Variable o factor} & \textbf{Función} & \textbf{Componentes o niveles} \\
+\midrule
+Tipo de arquitectura monolítica & Independiente & Monolito tradicional; monolito modular. \\[3pt]
+Consumo energético del software & Dependiente & Manifestado mediante indicadores: utilización de CPU, uso de memoria, tiempo de ejecución y consumo energético por unidad de trabajo. \\[3pt]
+Carga de trabajo & Factor controlado & Se mantiene similar entre ambas arquitecturas. \\[3pt]
+Hardware & Factor controlado & Se mantiene igual entre ambas arquitecturas. \\[3pt]
+Entorno de ejecución & Factor controlado & Se mantiene igual entre ambas arquitecturas. \\[3pt]
+Condiciones de operación & Factor controlado & Se mantienen similares entre ambas arquitecturas. \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia.}
+\end{table}
+
+\section{Variable independiente: tipo de arquitectura monolítica}
+\label{sec:var-indep}
+
+\textbf{Definición nominal-conceptual.} Forma en que se organiza internamente un sistema de software que se construye y se despliega como una única unidad~\cite{aldebagy2018comparative}. En este proyecto la variable tiene dos niveles:
+\begin{itemize}
+  \item \textbf{Monolito tradicional:} sistema cuya lógica de negocio se concentra en un mismo código base desplegable como una sola unidad, sin fronteras internas formalmente definidas entre sus componentes, de modo que estos pueden depender unos de otros con libertad.
+  \item \textbf{Monolito modular:} sistema que también se despliega como una sola unidad, pero cuyo código base se organiza internamente en módulos con responsabilidades acotadas, límites explícitos e interfaces definidas, que regulan las dependencias entre ellos.
+\end{itemize}
+
+Ambos niveles comparten la unidad de despliegue y difieren en la organización interna, lo que permite aislar el efecto de la modularidad interna del efecto de la distribución de componentes en servicios independientes. Es la variable que se contrasta en la hipótesis y no se manipula ninguna otra.
+
+\section{Variable dependiente: consumo energético del software}
+\label{sec:var-dep}
+
+\textbf{Definición nominal-conceptual.} Cantidad de energía que demanda la infraestructura de cómputo como consecuencia de la ejecución de un sistema de software mientras realiza un trabajo determinado. Se concibe en línea con los marcos de eficiencia de recursos y energía del software~\cite{kern2018sustainable} y es el aspecto del comportamiento del sistema sobre el cual se examina el efecto del tipo de arquitectura.
+
+\subsection{Indicadores asociados}
+\label{sec:indicadores}
+
+El consumo energético se manifiesta a través de indicadores del comportamiento del sistema durante su ejecución, en línea con las métricas de software verde~\cite{kipp2011green,kipp2012layered}. Estos indicadores son expresiones de la variable dependiente y no variables independientes:
+\begin{itemize}
+  \item \textbf{Utilización de CPU:} proporción de la capacidad de procesamiento que el sistema emplea durante su ejecución.
+  \item \textbf{Uso de memoria:} cantidad de memoria que el sistema ocupa mientras se ejecuta.
+  \item \textbf{Tiempo de ejecución:} duración que requiere el sistema para completar un trabajo determinado.
+  \item \textbf{Consumo energético por unidad de trabajo:} energía demandada en relación con la cantidad de trabajo completado, lo que permite comparar el comportamiento energético de ambas arquitecturas sobre una base común.
+\end{itemize}
+
+\section{Factores controlados}
+\label{sec:factores}
+
+Para que una diferencia observada pueda atribuirse al tipo de arquitectura y no a otras condiciones, ciertos factores deben mantenerse constantes o equivalentes entre las dos arquitecturas. Esta exigencia responde a que los resultados de los estudios previos dependen de sus condiciones experimentales~\cite{araujo2024energy}. Estos factores no son objeto de manipulación ni de contraste en la hipótesis:
+\begin{itemize}
+  \item \textbf{Carga de trabajo:} conjunto de operaciones y solicitudes a las que se somete el sistema; debe ser similar en tipo, volumen y distribución para ambas arquitecturas.
+  \item \textbf{Hardware:} infraestructura física sobre la que se ejecuta el sistema, que debe ser la misma para ambas arquitecturas.
+  \item \textbf{Entorno de ejecución:} software de soporte sobre el que se ejecuta el sistema ---sistema operativo, plataforma de ejecución, versiones y configuración---, que debe ser el mismo para ambas arquitecturas.
+  \item \textbf{Condiciones de operación:} circunstancias en las que se realizan las ejecuciones, como el estado inicial del sistema, los procesos concurrentes, la duración y la repetición de las pruebas, que deben ser similares para ambas arquitecturas.
+\end{itemize}
+
+Adicionalmente, las dos implementaciones deben ofrecer la misma funcionalidad, de manera que la comparación se realice entre versiones equivalentes de un mismo sistema, tal como se plantea en el control del pronóstico (sección~\ref{sec:control}).
+
+\section{Relación entre las variables}
+
+El tipo de arquitectura monolítica actúa como variable independiente y el consumo energético del software como variable dependiente; los indicadores permiten observar esta última, y los factores controlados delimitan las condiciones de comparación. Esta estructura es coherente con la pregunta de investigación, que indaga cómo cambia el consumo energético entre ambas arquitecturas bajo condiciones y cargas de trabajo similares, y con el problema planteado, que identifica la falta de evidencia comparativa consistente como vacío de conocimiento.

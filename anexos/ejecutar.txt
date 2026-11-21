@@ -1,0 +1,2 @@
+sudo -v
+REPS=12 systemd-inhibit --what=sleep:idle:handle-lid-switch ./correr.sh 2>&1 | tee corrida.log

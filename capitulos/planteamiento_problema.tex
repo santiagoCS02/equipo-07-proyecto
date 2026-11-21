@@ -1,5 +1,5 @@
 \chapter{Planteamiento del problema}
-\label{cap:problema}
+\label{cap:planteamiento}
 
 \section{Antecedentes}
 \label{sec:antecedentes}
@@ -18,7 +18,7 @@ La comparación entre arquitecturas monolíticas y modulares ---particularmente 
 
 Un conjunto más específico de estudios ha abordado directamente la comparación del consumo energético entre arquitecturas monolíticas y modulares. Capuano, O'Dea y Muccini~\cite{capuano2026comparative} realizaron un análisis comparativo experimental entre versiones monolíticas y de microservicios de aplicaciones de referencia (PetClinic y TicketMonster), encontrando que las arquitecturas de microservicios pueden consumir en promedio un 5.02\,\% menos de energía que sus contrapartes monolíticas bajo cargas medias y altas, atribuyendo esta diferencia a una mejor utilización de recursos y a la ejecución modular de los componentes. Sin embargo, los propios autores advierten que estos resultados se limitan a condiciones controladas y a un número reducido de casos de estudio, por lo que no deben generalizarse sin evidencia adicional.
 
-En contraste, Araújo et al.~\cite{araujo2024energy}, en una revisión sistemática de la literatura sobre consumo energético en arquitecturas de microservicios, señalan que los hallazgos disponibles no son consistentes entre sí y dependen fuertemente de las condiciones experimentales ---tipo de aplicación, infraestructura de despliegue y métricas utilizadas---, lo que dificulta establecer conclusiones generalizables sobre si la modularidad reduce o incrementa el consumo energético. Esta revisión constituye uno de los antecedentes más directamente relacionados con el problema de investigación planteado, pues evidencia de manera explícita el vacío de conocimiento que esta investigación busca abordar.
+En contraste, Araujo et al.~\cite{araujo2024energy}, en una revisión sistemática de la literatura sobre consumo energético en arquitecturas de microservicios, señalan que los hallazgos disponibles no son consistentes entre sí y dependen fuertemente de las condiciones experimentales ---tipo de aplicación, infraestructura de despliegue y métricas utilizadas---, lo que dificulta establecer conclusiones generalizables sobre si la modularidad reduce o incrementa el consumo energético. Esta revisión constituye uno de los antecedentes más directamente relacionados con el problema de investigación planteado, pues evidencia de manera explícita el vacío de conocimiento que esta investigación busca abordar.
 
 \subsection{Consumo energético y eficiencia energética del software}
 
@@ -31,105 +31,203 @@ Khan et al.~\cite{khan2020cloud} realizaron un mapeo sistemático de técnicas d
 Anwar y Pfahl~\cite{anwar2017towards} propusieron el uso de analítica de software para avanzar hacia una ingeniería de software más sostenible, mientras que Marimuthu y Chandrasekaran~\cite{marimuthu2017green} realizaron un mapeo sistemático de los aspectos de la ingeniería de software relacionados con la sostenibilidad y el software verde, identificando una notable escasez de estudios experimentales que relacionen directamente decisiones arquitectónicas específicas ---como la elección entre monolito y microservicios--- con métricas de consumo energético medidas empíricamente. Este hallazgo constituye un antecedente clave que justifica la necesidad de un estudio experimental comparativo como el que se propone en este proyecto.
 
 \subsection{Vacío identificado}
+\label{sec:vacio}
 
 La revisión de los antecedentes anteriores permite identificar un vacío de conocimiento consistente: si bien existe evidencia de que el estilo arquitectónico de un sistema de software influye en su consumo de recursos y energía~\cite{jagroep2017extending,seo2008framework}, y existen estudios experimentales puntuales que comparan arquitecturas monolíticas y modulares en este aspecto~\cite{capuano2026comparative}, los resultados disponibles no son consistentes entre sí~\cite{araujo2024energy} y dependen en gran medida de las condiciones experimentales específicas de cada estudio. Adicionalmente, la mayoría de los marcos conceptuales sobre software sostenible~\cite{kern2018sustainable,kipp2011green,kipp2012layered} se han desarrollado de forma independiente de los estudios comparativos entre estilos arquitectónicos, sin que exista una integración clara entre ambos cuerpos de conocimiento. Este vacío ---la ausencia de evidencia experimental consistente y reproducible sobre las condiciones bajo las cuales una arquitectura modular resulta más o menos eficiente energéticamente que una arquitectura monolítica equivalente--- constituye el fundamento sobre el cual se plantea el problema de investigación de este proyecto.
 
 \subsection{Metodología PRISMA aplicada a la búsqueda de antecedentes}
 \label{sec:prisma}
 
-La identificación de los antecedentes presentados en esta sección se orientó siguiendo los principios de transparencia y documentación de la metodología PRISMA. A continuación se documenta el proceso realizado, indicando explícitamente los elementos que corresponden a búsquedas efectivamente realizadas y aquellos que quedan pendientes de una revisión sistemática formal en una etapa posterior del proyecto.
+La identificación de los antecedentes presentados en esta sección se orientó siguiendo los principios de transparencia y documentación de la metodología PRISMA. A continuación se documenta el proceso realizado, indicando explícitamente los elementos que corresponden a búsquedas efectivamente realizadas y aquellos que quedan para una revisión sistemática formal en una etapa posterior del proyecto.
 
 \textbf{Bases de datos consultadas:} motor de búsqueda académico general (equivalente a Google Scholar), con verificación cruzada en repositorios de editoriales académicas (IEEE Xplore, ACM Digital Library, ScienceDirect, Springer Link, arXiv).
 
-\textbf{Términos de búsqueda empleados:} \textit{``energy consumption microservices monolithic architecture''}; \textit{``green software engineering energy efficiency systematic review''}; \textit{``modularity software architecture performance trade-off''}.
+\textbf{Términos de búsqueda empleados:} ``energy consumption microservices monolithic architecture''; ``green software engineering energy efficiency systematic review''; ``modularity software architecture performance trade-off''.
 
-\textbf{Periodo de búsqueda:} sin restricción de fecha inicial; se priorizaron publicaciones recientes sin excluir trabajos clásicos que definen conceptos fundamentales del área (por ejemplo, Seo et al.~\cite{seo2008framework}, de 2008).
+\textbf{Periodo de búsqueda:} sin restricción de fecha inicial; se priorizaron publicaciones recientes sin excluir trabajos clásicos que definen conceptos fundamentales del área (por ejemplo,~\cite{seo2008framework}, de 2008).
 
 \textbf{Criterios de inclusión:} publicaciones académicas revisadas por pares (artículos de revista, ponencias de conferencia, capítulos de libro académico); relación directa con arquitectura de software, modularidad, consumo de recursos o eficiencia energética del software.
 
 \textbf{Criterios de exclusión:} entradas de blog, documentación comercial no académica, contenido sin autoría verificable, fuentes que abordan fenómenos ajenos al objeto de estudio (por ejemplo, eficiencia energética de hardware sin relación con decisiones de software).
 
-\textbf{Identificación, cribado, elegibilidad e inclusión:} el proceso de identificación y cribado se realizó de manera exploratoria mediante las búsquedas señaladas; el número exacto de resultados totales arrojados por cada motor de búsqueda, el número de duplicados eliminados y el número de documentos examinados en su totalidad no fue registrado de manera sistemática en esta fase preliminar del proyecto. [DATO PRISMA POR COMPLETAR: cifras exactas de identificación, cribado, elegibilidad e inclusión, a documentar en la fase de revisión sistemática formal del estado del arte]. De los documentos identificados, se incluyeron finalmente 13 referencias que cumplieron los criterios de inclusión y que sustentan directamente los distintos componentes del problema de investigación planteado, según se detalla en la tabla~\ref{tab:antecedentes}.
+\textbf{Identificación, cribado, elegibilidad e inclusión:} el proceso de identificación y cribado se realizó de manera exploratoria mediante las búsquedas señaladas; el número exacto de resultados totales arrojados por cada motor de búsqueda, el número de duplicados eliminados y el número de documentos examinados en su totalidad no fue registrado de manera sistemática en esta fase preliminar del proyecto.
+
+La documentación con cifras exactas de identificación, cribado, elegibilidad e inclusión se plantea como parte de una revisión sistemática formal posterior (sección~\ref{sec:trabajo-futuro}).
+
+De los documentos identificados, se incluyeron finalmente 13 referencias que cumplieron los criterios de inclusión y que sustentan directamente los distintos componentes del problema de investigación planteado, según se detalla en la tabla~\ref{tab:antecedentes}.
 
 \subsection{Tabla de antecedentes}
 
-\begin{table}[htbp]
-\centering
-\caption{Síntesis de antecedentes académicos revisados}
-\label{tab:antecedentes}
-\scriptsize
+\begin{landscape}
+\begingroup
+\footnotesize
 \setstretch{1.0}
+\setlength{\tabcolsep}{3pt}
 \setlength{\parskip}{0pt}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}cp{1.9cm}p{2.3cm}p{2.0cm}p{1.7cm}p{2.3cm}p{2.0cm}@{}}
+\begin{longtable}{@{}p{0.7cm}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\caption{Síntesis de antecedentes académicos revisados}\label{tab:antecedentes}\\
 \toprule
-\textbf{N.$^{\circ}$} & \textbf{Autor(es) y año} & \textbf{Título} & \textbf{Objetivo} & \textbf{Metodología} & \textbf{Principales resultados} & \textbf{Relación con la investigación} \\
+\textbf{N.º} & \textbf{Autor(es) y año} & \textbf{Título} & \textbf{Objetivo} & \textbf{Metodología} & \textbf{Principales resultados} & \textbf{Relación con la investigación} \\
 \midrule
-1 & Seo et al. (2008)~\cite{seo2008framework} & Marco para estimar el impacto arquitectónico en el consumo energético & Proponer un método de estimación del consumo energético según el estilo arquitectónico & Propuesta de marco conceptual y experimental & Sienta las bases metodológicas para relacionar arquitectura y energía & Antecedente metodológico directo \\[2pt]
-2 & Jagroep et al. (2017)~\cite{jagroep2017extending} & Extensión de vistas de arquitectura con perspectiva energética & Incorporar el consumo energético como vista arquitectónica & Caso de estudio en software empresarial & Las decisiones arquitectónicas afectan mediblemente el consumo de recursos & Sustenta la relación arquitectura-recursos \\[2pt]
-3 & Al-Debagy y Martinek (2018)~\cite{aldebagy2018comparative} & Revisión comparativa de microservicios y arquitecturas monolíticas & Comparar estructuralmente ambos estilos & Revisión comparativa & Identifica diferencias estructurales y operativas & Fundamenta la definición de arquitectura monolítica y modular \\[2pt]
-4 & Su, Li y Taibi (2024)~\cite{su2024microservice} & De microservicio a monolito: revisión multivocal & Analizar la migración inversa (microservicio a monolito) & Revisión multivocal de literatura & La modularidad no siempre reporta beneficios proporcionales & Cuestiona la superioridad universal de la modularidad \\[2pt]
-5 & Capuano, O'Dea y Muccini (2026)~\cite{capuano2026comparative} & Análisis comparativo de consumo energético: monolito vs. microservicios & Comparar el consumo energético entre ambos estilos & Experimento controlado (PetClinic, TicketMonster) & Ahorro energético promedio de 5.02\,\% con microservicios bajo carga media/alta & Evidencia experimental directa del problema \\[2pt]
-6 & Araújo et al. (2024)~\cite{araujo2024energy} & Consumo energético en arquitecturas de microservicios: revisión sistemática & Sintetizar la evidencia disponible sobre consumo energético en microservicios & Revisión sistemática de literatura (IEEE Access) & Resultados inconsistentes según condiciones experimentales & Evidencia directa del vacío de conocimiento \\[2pt]
-7 & Capra, Francalanci y Slaughter (2012)~\cite{capra2012green} & ¿Es ``verde'' el software? & Evaluar la eficiencia energética en entornos de desarrollo de software libre & Estudio empírico & Aporta una de las primeras aproximaciones a la sostenibilidad del software & Fundamenta el concepto de software sostenible \\[2pt]
-8 & Kern et al. (2018)~\cite{kern2018sustainable} & Productos de software sostenibles: criterios de evaluación & Proponer criterios de evaluación de eficiencia energética & Propuesta conceptual / marco de criterios & Define criterios de recursos y energía para productos de software & Aporta marco conceptual de métricas energéticas \\[2pt]
-9 & Kipp, Jiang y Fugini (2011)~\cite{kipp2011green} & Métricas verdes para sistemas de TI conscientes de la energía & Proponer métricas de consumo energético en sistemas de TI & Propuesta de métricas & Introduce indicadores de consumo energético aplicables a software & Sustenta la medición del consumo energético \\[2pt]
-10 & Kipp et al. (2012)~\cite{kipp2012layered} & Indicadores de desempeño verde por capas & Ampliar las métricas verdes a una estructura por capas & Propuesta de indicadores estratificados & Permite evaluar el consumo energético en distintos niveles arquitectónicos & Sustenta la evaluación energética por componente \\[2pt]
-11 & Khan et al. (2020)~\cite{khan2020cloud} & Técnicas de software para centros de datos energéticamente eficientes & Mapear técnicas de eficiencia energética en la nube & Mapeo sistemático & Las estrategias existentes se centran en infraestructura, no en diseño de aplicación & Evidencia un vacío relacionado con decisiones de diseño de software \\[2pt]
-12 & Anwar y Pfahl (2017)~\cite{anwar2017towards} & Hacia una ingeniería de software más verde mediante analítica de software & Explorar el uso de analítica para la sostenibilidad del software & Mapeo sistemático & Identifica oportunidades de aplicar analítica al software sostenible & Aporta antecedente metodológico complementario \\[2pt]
-13 & Marimuthu y Chandrasekaran (2017)~\cite{marimuthu2017green} & Aspectos de ingeniería de software verde y sostenible & Mapear el estado del arte en software verde y sostenible & Mapeo sistemático & Evidencia escasez de estudios experimentales que relacionen arquitectura y consumo energético & Justifica directamente la necesidad de este estudio \\
+\endfirsthead
+\multicolumn{7}{@{}l}{\small\textit{Tabla~\thetable\ (continuación)}}\\
+\toprule
+\textbf{N.º} & \textbf{Autor(es) y año} & \textbf{Título} & \textbf{Objetivo} & \textbf{Metodología} & \textbf{Principales resultados} & \textbf{Relación con la investigación} \\
+\midrule
+\endhead
 \bottomrule
-\end{tabular}
-\fuente{elaboración propia.}
-\end{table}
+\endfoot
+1 & Seo et al. (2008)~\cite{seo2008framework} & Marco para estimar el impacto arquitectónico en el consumo energético & Proponer un método de estimación del consumo energético según el estilo arquitectónico & Propuesta de marco conceptual y experimental & Sienta las bases metodológicas para relacionar arquitectura y energía & Antecedente metodológico directo \\[4pt]
+2 & Jagroep et al. (2017)~\cite{jagroep2017extending} & Extensión de vistas de arquitectura con perspectiva energética & Incorporar el consumo energético como vista arquitectónica & Caso de estudio en software empresarial & Las decisiones arquitectónicas afectan mediblemente el consumo de recursos & Sustenta la relación arquitectura-recursos \\[4pt]
+3 & Al-Debagy y Martinek (2018)~\cite{aldebagy2018comparative} & Revisión comparativa de microservicios y arquitecturas monolíticas & Comparar estructuralmente ambos estilos & Revisión comparativa & Identifica diferencias estructurales y operativas & Fundamenta la definición de arquitectura monolítica y modular \\[4pt]
+4 & Su, Li y Taibi (2024)~\cite{su2024microservice} & De microservicio a monolito: revisión multivocal & Analizar la migración inversa (microservicio a monolito) & Revisión multivocal de literatura & La modularidad no siempre reporta beneficios proporcionales & Cuestiona la superioridad universal de la modularidad \\[4pt]
+5 & Capuano, O'Dea y Muccini (2026)~\cite{capuano2026comparative} & Análisis comparativo de consumo energético: monolito vs. microservicios & Comparar el consumo energético entre ambos estilos & Experimento controlado (PetClinic, TicketMonster) & Ahorro energético promedio de 5.02\,\% con microservicios bajo carga media/alta & Evidencia experimental directa del problema \\[4pt]
+6 & Araujo et al. (2024)~\cite{araujo2024energy} & Consumo energético en arquitecturas de microservicios: revisión sistemática & Sintetizar la evidencia disponible sobre consumo energético en microservicios & Revisión sistemática de literatura (IEEE Access) & Resultados inconsistentes según condiciones experimentales & Evidencia directa del vacío de conocimiento \\[4pt]
+7 & Capra, Francalanci y Slaughter (2012)~\cite{capra2012green} & ¿Es ``verde'' el software? & Evaluar la eficiencia energética en entornos de desarrollo de software libre & Estudio empírico & Aporta una de las primeras aproximaciones a la sostenibilidad del software & Fundamenta el concepto de software sostenible \\[4pt]
+8 & Kern et al. (2018)~\cite{kern2018sustainable} & Productos de software sostenibles: criterios de evaluación & Proponer criterios de evaluación de eficiencia energética & Propuesta conceptual / marco de criterios & Define criterios de recursos y energía para productos de software & Aporta marco conceptual de métricas energéticas \\[4pt]
+9 & Kipp, Jiang y Fugini (2011)~\cite{kipp2011green} & Métricas verdes para sistemas de TI conscientes de la energía & Proponer métricas de consumo energético en sistemas de TI & Propuesta de métricas & Introduce indicadores de consumo energético aplicables a software & Sustenta la medición del consumo energético \\[4pt]
+10 & Kipp et al. (2012)~\cite{kipp2012layered} & Indicadores de desempeño verde por capas & Ampliar las métricas verdes a una estructura por capas & Propuesta de indicadores estratificados & Permite evaluar el consumo energético en distintos niveles arquitectónicos & Sustenta la evaluación energética por componente \\[4pt]
+11 & Khan et al. (2020)~\cite{khan2020cloud} & Técnicas de software para centros de datos energéticamente eficientes & Mapear técnicas de eficiencia energética en la nube & Mapeo sistemático & Las estrategias existentes se centran en infraestructura, no en diseño de aplicación & Evidencia un vacío relacionado con decisiones de diseño de software \\[4pt]
+12 & Anwar y Pfahl (2017)~\cite{anwar2017towards} & Hacia una ingeniería de software más verde mediante analítica de software & Explorar el uso de analítica para la sostenibilidad del software & Mapeo sistemático & Identifica oportunidades de aplicar analítica al software sostenible & Aporta antecedente metodológico complementario \\[4pt]
+13 & Marimuthu y Chandrasekaran (2017)~\cite{marimuthu2017green} & Aspectos de ingeniería de software verde y sostenible & Mapear el estado del arte en software verde y sostenible & Mapeo sistemático & Evidencia escasez de estudios experimentales que relacionen arquitectura y consumo energético & Justifica directamente la necesidad de este estudio \\
+\end{longtable}
+\fuente{elaboración propia a partir de las publicaciones citadas.}
+\endgroup
+\end{landscape}
 
 \section{Descripción de la situación problemática}
-\label{sec:situacion-problematica}
+\label{sec:descripcion}
+
+\subsection{Idea de investigación}
 
 La idea inicial de esta investigación surge de una observación recurrente en la práctica de la ingeniería de software: las decisiones sobre el estilo arquitectónico de un sistema ---monolítico frente a modular--- suelen tomarse considerando criterios de escalabilidad, mantenibilidad y velocidad de desarrollo, mientras que el impacto de dichas decisiones sobre el consumo de recursos computacionales y energéticos rara vez se evalúa de forma sistemática antes de su adopción~\cite{khan2020cloud}.
 
-El fenómeno que se pretende estudiar es la relación entre el tipo de arquitectura monolítica de un sistema de software (monolito tradicional o monolito modular) y su consumo de recursos ---procesamiento, memoria y, de forma derivada, energía--- bajo condiciones y cargas de trabajo similares. Este fenómeno se enmarca en el contexto más amplio de la sostenibilidad del software, un campo que ha cobrado relevancia debido al crecimiento del consumo energético asociado a los centros de datos y a la infraestructura de cómputo en la nube~\cite{marimuthu2017green}. Los elementos centrales que se exploran incluyen:
+El fenómeno que se pretende estudiar es la relación entre el tipo de arquitectura monolítica de un sistema de software (monolito tradicional o monolito modular) y su consumo de recursos ---procesamiento, memoria y, de forma derivada, energía--- bajo condiciones y cargas de trabajo similares. Este fenómeno se enmarca en el contexto más amplio de la sostenibilidad del software, un campo que ha cobrado relevancia debido al crecimiento del consumo energético asociado a los centros de datos y a la infraestructura de cómputo en la nube~\cite{marimuthu2017green}.
 
+Las variables o elementos centrales que se pretenden explorar incluyen:
 \begin{itemize}
-    \item el tipo de arquitectura monolítica del sistema (monolito tradicional o monolito modular);
-    \item la carga de trabajo sobre el sistema, que debe mantenerse equivalente entre las arquitecturas comparadas;
-    \item el consumo de recursos computacionales (CPU, memoria);
-    \item el consumo energético estimado o medido asociado a la ejecución del sistema;
-    \item el tiempo de ejecución, como indicador de desempeño asociado.
+  \item el tipo de arquitectura monolítica del sistema (monolito tradicional o monolito modular);
+  \item la carga de trabajo sobre el sistema, que debe mantenerse equivalente entre las arquitecturas comparadas;
+  \item el consumo de recursos computacionales (CPU, memoria);
+  \item el consumo energético estimado o medido asociado a la ejecución del sistema;
+  \item el tiempo de ejecución, como indicador de desempeño asociado.
 \end{itemize}
 
-Durante las últimas dos décadas, la evolución desde arquitecturas monolíticas hacia arquitecturas modulares ---particularmente bajo el paradigma de microservicios--- ha sido impulsada principalmente por la búsqueda de escalabilidad, disponibilidad y facilidad de mantenimiento en sistemas de creciente complejidad~\cite{aldebagy2018comparative}. Compañías con operaciones a gran escala popularizaron esta transición, y sus experiencias se convirtieron en referentes que influyeron en las decisiones arquitectónicas de organizaciones de contextos muy distintos, sin que necesariamente existiera evidencia de que los beneficios reportados fueran generalizables a sistemas de menor tamaño o a condiciones de carga diferentes. En paralelo, el consumo energético de la infraestructura de cómputo ha aumentado de forma sostenida, dando origen a la ingeniería de software sostenible o \textit{Green Software Engineering}, que busca incorporar criterios de consumo de recursos y energía en el diseño, desarrollo y operación del software~\cite{kern2018sustainable,capra2012green}.
+Esta idea resulta relevante porque, a diferencia de otras propiedades de calidad del software ---como la disponibilidad o la escalabilidad---, el consumo energético ha sido históricamente un criterio secundario en la toma de decisiones arquitectónicas, a pesar de su creciente importancia ambiental, operativa y económica~\cite{anwar2017towards}. La transición de una idea general ---la sostenibilidad del software--- hacia un problema de investigación susceptible de abordaje empírico exige delimitar con precisión qué se entiende por consumo energético en este contexto, qué arquitecturas se compararán y bajo qué condiciones experimentales se realizará dicha comparación, aspectos que se desarrollan en los apartados siguientes.
 
-Es en la intersección de estos dos fenómenos donde se sitúa el problema que origina esta investigación: la falta de evidencia comparativa suficiente y sistematizada sobre el impacto real que tiene la elección entre una arquitectura de software monolítica y una arquitectura modular sobre el consumo de recursos computacionales y energéticos~\cite{jagroep2017extending}. Para precisar sus alcances, conviene distinguir cuatro dimensiones:
+\subsection{Problema de investigación}
+\label{sec:problema}
 
+El problema que origina esta investigación puede describirse como la falta de evidencia comparativa suficiente y sistematizada sobre el impacto real que tiene la elección entre una arquitectura de software monolítica y una arquitectura modular sobre el consumo de recursos computacionales y energéticos, en contraste con la abundante literatura existente sobre el impacto de dichas arquitecturas en escalabilidad, disponibilidad y mantenibilidad~\cite{jagroep2017extending}.
+
+Es necesario diferenciar, en este punto, varios elementos que suelen confundirse en la discusión sobre arquitectura de software y sostenibilidad:
 \begin{itemize}
-    \item \textbf{El fenómeno:} el consumo de recursos de cómputo (CPU, memoria) y de energía varía según el estilo arquitectónico adoptado y las condiciones de carga del sistema.
-    \item \textbf{La situación problemática:} las decisiones arquitectónicas en proyectos de ingeniería de sistemas suelen adoptarse sin considerar de manera explícita su impacto energético, priorizando criterios de escalabilidad o velocidad de desarrollo~\cite{khan2020cloud}.
-    \item \textbf{El vacío de conocimiento:} si bien existen estudios comparativos entre arquitecturas monolíticas y modulares en términos de consumo energético, sus resultados no son consistentes entre sí ---algunos reportan ahorros energéticos con arquitecturas modulares bajo carga alta~\cite{capuano2026comparative}, mientras otros documentan mayor consumo debido a la sobrecarga de coordinación~\cite{araujo2024energy}---, lo cual responde a la heterogeneidad de tipos de aplicación, niveles de carga, infraestructuras de despliegue y métricas empleadas.
-    \item \textbf{La necesidad de investigación:} comprender, en un contexto experimental controlado y reproducible, bajo qué condiciones una arquitectura modular resulta más o menos eficiente energéticamente que una arquitectura monolítica equivalente.
+  \item \textbf{El fenómeno:} el consumo de recursos de cómputo (CPU, memoria) y de energía varía según el estilo arquitectónico adoptado y las condiciones de carga del sistema.
+  \item \textbf{La situación problemática:} las decisiones arquitectónicas en proyectos de ingeniería de sistemas suelen adoptarse sin considerar de manera explícita su impacto energético, priorizando criterios de escalabilidad o velocidad de desarrollo~\cite{khan2020cloud}.
+  \item \textbf{El vacío de conocimiento:} si bien existen estudios comparativos entre arquitecturas monolíticas y modulares en términos de consumo energético, sus resultados no son consistentes entre sí ---algunos reportan ahorros energéticos con arquitecturas modulares bajo carga alta~\cite{capuano2026comparative}, mientras otros documentan mayor consumo debido a la sobrecarga de coordinación~\cite{araujo2024energy}---, lo cual evidencia la necesidad de estudios adicionales que consideren condiciones experimentales específicas y reproducibles.
+  \item \textbf{La necesidad de investigación:} comprender, en un contexto experimental controlado, bajo qué condiciones una arquitectura modular resulta más o menos eficiente energéticamente que una arquitectura monolítica equivalente.
 \end{itemize}
 
-A partir de esta situación se identifican los principales síntomas observables, sus causas probables y las consecuencias asociadas, resumidos en la tabla~\ref{tab:sintomas}.
+Este problema no se limita a una cuestión meramente técnica de rendimiento; tiene implicaciones directas sobre la sostenibilidad ambiental del desarrollo de software, sobre los costos operativos asociados al consumo energético de la infraestructura de cómputo, y sobre la calidad de las decisiones arquitectónicas que toman los equipos de ingeniería de sistemas~\cite{kern2018sustainable}. La ausencia de criterios claros y empíricamente sustentados obliga a los equipos de desarrollo a tomar decisiones arquitectónicas basadas en supuestos generales o en la literatura de casos particulares ---como los de grandes compañías tecnológicas--- cuyos hallazgos no necesariamente son generalizables a sistemas de menor escala o a contextos institucionales diferentes.
 
-\begin{table}[htbp]
-\centering
-\caption{Síntomas, causas y consecuencias del problema}
-\label{tab:sintomas}
+En este sentido, el problema de investigación no consiste en determinar de manera absoluta cuál arquitectura es ``mejor'', sino en identificar y caracterizar, mediante evidencia experimental, las condiciones bajo las cuales cada estilo arquitectónico resulta más eficiente en términos de consumo de recursos y energía.
+
+\subsection{Síntomas, causas y consecuencias}
+\label{sec:sintomas}
+
+A partir del problema descrito en la sección anterior, se identifican a continuación los principales síntomas observables, sus causas probables y las consecuencias asociadas a la ausencia de criterios claros sobre la relación entre arquitectura de software y consumo energético (tabla~\ref{tab:sintomas}).
+
+\begingroup
 \small
 \setstretch{1.0}
 \setlength{\parskip}{0pt}
-\begin{tabular}{@{}cp{4.2cm}p{4.3cm}p{4.3cm}@{}}
+\begin{longtable}{@{}p{0.8cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\caption{Síntomas, causas y consecuencias del problema}\label{tab:sintomas}\\
 \toprule
-\textbf{N.$^{\circ}$} & \textbf{Síntoma} & \textbf{Causa} & \textbf{Consecuencia} \\
+\textbf{N.º} & \textbf{Síntoma} & \textbf{Causa} & \textbf{Consecuencia} \\
 \midrule
-1 & Las decisiones de arquitectura de software se justifican casi exclusivamente en criterios de escalabilidad y mantenibilidad. & Ausencia de métricas energéticas integradas en los procesos habituales de diseño de software~\cite{kern2018sustainable}. & Se adoptan arquitecturas sin conocer su impacto real en el consumo de recursos computacionales. \\[3pt]
-2 & Los estudios comparativos existentes entre arquitecturas monolíticas y modulares reportan resultados contradictorios sobre el consumo energético. & Diferencias en las condiciones experimentales (carga de trabajo, tipo de aplicación, infraestructura) entre los estudios disponibles~\cite{araujo2024energy,capuano2026comparative}. & Los equipos de desarrollo carecen de criterios consistentes para tomar decisiones informadas. \\[3pt]
-3 & La migración hacia arquitecturas modulares (microservicios) se realiza con frecuencia motivada por tendencias de la industria más que por evidencia técnica específica del contexto. & Popularización de casos de éxito de grandes compañías tecnológicas que no siempre son representativos de sistemas de menor escala~\cite{aldebagy2018comparative}. & Posible incremento no anticipado del consumo de recursos y energía en sistemas que no se benefician de la modularidad bajo su carga real. \\[3pt]
-4 & Persistencia de arquitecturas monolíticas en sistemas que podrían beneficiarse energéticamente de una descomposición modular bajo cargas altas. & Desconocimiento de las condiciones específicas bajo las cuales la modularidad mejora la eficiencia energética~\cite{jagroep2017extending}. & Consumo energético superior al necesario en escenarios de alta demanda, con impacto ambiental y en costos operativos. \\[3pt]
-5 & Baja incorporación de métricas de sostenibilidad (\textit{green metrics}) en el ciclo de vida del desarrollo de software. & Predominio histórico de métricas de calidad centradas en funcionalidad y rendimiento sobre métricas de sostenibilidad~\cite{marimuthu2017green}. & Dificultad para evaluar y comparar objetivamente el desempeño energético de distintas decisiones arquitectónicas. \\
+\endfirsthead
+\multicolumn{4}{@{}l}{\small\textit{Tabla~\thetable\ (continuación)}}\\
+\toprule
+\textbf{N.º} & \textbf{Síntoma} & \textbf{Causa} & \textbf{Consecuencia} \\
+\midrule
+\endhead
 \bottomrule
-\end{tabular}
-\fuente{elaboración propia.}
-\end{table}
+\endfoot
+1 & Las decisiones de arquitectura de software se justifican casi exclusivamente en criterios de escalabilidad y mantenibilidad. & Ausencia de métricas energéticas integradas en los procesos habituales de diseño de software~\cite{kern2018sustainable}. & Se adoptan arquitecturas sin conocer su impacto real en el consumo de recursos computacionales. \\[6pt]
+2 & Los estudios comparativos existentes entre arquitecturas monolíticas y modulares reportan resultados contradictorios sobre el consumo energético. & Diferencias en las condiciones experimentales (carga de trabajo, tipo de aplicación, infraestructura) entre los estudios disponibles~\cite{araujo2024energy,capuano2026comparative}. & Los equipos de desarrollo carecen de criterios consistentes para tomar decisiones informadas. \\[6pt]
+3 & La migración hacia arquitecturas modulares (microservicios) se realiza con frecuencia motivada por tendencias de la industria más que por evidencia técnica específica del contexto. & Popularización de casos de éxito de grandes compañías tecnológicas que no siempre son representativos de sistemas de menor escala~\cite{aldebagy2018comparative}. & Posible incremento no anticipado del consumo de recursos y energía en sistemas que no se benefician de la modularidad bajo su carga real. \\[6pt]
+4 & Persistencia de arquitecturas monolíticas en sistemas que podrían beneficiarse energéticamente de una descomposición modular bajo cargas altas. & Desconocimiento de las condiciones específicas bajo las cuales la modularidad mejora la eficiencia energética~\cite{jagroep2017extending}. & Consumo energético superior al necesario en escenarios de alta demanda, con impacto ambiental y en costos operativos. \\[6pt]
+5 & Baja incorporación de métricas de sostenibilidad (\textit{green metrics}) en el ciclo de vida del desarrollo de software. & Predominio histórico de métricas de calidad centradas en funcionalidad y rendimiento sobre métricas de sostenibilidad~\cite{marimuthu2017green}. & Dificultad para evaluar y comparar objetivamente el desempeño energético de distintas decisiones arquitectónicas. \\
+\end{longtable}
+\fuente{elaboración propia a partir de la literatura revisada.}
+\endgroup
 
-Los síntomas identificados están estrechamente relacionados entre sí: la falta de métricas energéticas integradas en el proceso de diseño (síntoma~1) se conecta directamente con la inconsistencia de los estudios comparativos disponibles (síntoma~2), pues ambos reflejan un mismo vacío ---la ausencia de un marco experimental estandarizado para evaluar el consumo energético según el estilo arquitectónico---. A su vez, esta carencia favorece que las decisiones de migración o permanencia en
+Los síntomas identificados están estrechamente relacionados entre sí: la falta de métricas energéticas integradas en el proceso de diseño (síntoma 1) se conecta directamente con la inconsistencia de los estudios comparativos disponibles (síntoma 2), pues ambos reflejan un mismo vacío ---la ausencia de un marco experimental estandarizado para evaluar el consumo energético según el estilo arquitectónico---. A su vez, esta carencia favorece que las decisiones de migración o permanencia en un determinado estilo arquitectónico (síntomas 3 y 4) se tomen con base en tendencias de la industria en lugar de evidencia específica del contexto de aplicación.
+
+Las causas identificadas remiten, en su mayoría, a un mismo origen: la eficiencia energética ha sido tradicionalmente un criterio secundario frente a otras propiedades de calidad del software, lo que ha limitado tanto la generación de evidencia comparativa consistente como la incorporación de métricas de sostenibilidad en la práctica profesional. Las consecuencias, por su parte, convergen en un mismo riesgo: la adopción de decisiones arquitectónicas subóptimas desde el punto de vista energético, con implicaciones ambientales, operativas y económicas que se agravan a medida que crece la escala de los sistemas desplegados.
+
+\subsection{Descripción del problema}
+\label{sec:narrativa}
+
+El desarrollo de sistemas de software se enfrenta, de manera creciente, a la necesidad de equilibrar propiedades de calidad que en ocasiones resultan contrapuestas. Durante las últimas dos décadas, la evolución desde arquitecturas monolíticas hacia arquitecturas modulares ---particularmente bajo el paradigma de microservicios--- ha sido impulsada principalmente por la búsqueda de escalabilidad, disponibilidad y facilidad de mantenimiento en sistemas de creciente complejidad~\cite{aldebagy2018comparative}. Compañías con operaciones a gran escala popularizaron esta transición, y sus experiencias se convirtieron en referentes que influyeron en las decisiones arquitectónicas de organizaciones de contextos muy distintos, sin que necesariamente existiera evidencia de que los beneficios reportados fueran generalizables a sistemas de menor tamaño o a condiciones de carga diferentes.
+
+En paralelo a esta transformación arquitectónica, el consumo energético de la infraestructura de cómputo ---centros de datos, servidores en la nube y sistemas distribuidos--- ha aumentado de forma sostenida, lo que ha situado a la eficiencia energética del software como una preocupación creciente dentro de la ingeniería de sistemas~\cite{capra2012green}. Surge así el campo de la ingeniería de software sostenible o \textit{Green Software Engineering}, que busca incorporar criterios de consumo de recursos y energía dentro del proceso de diseño, desarrollo y operación del software~\cite{kern2018sustainable}.
+
+Es en la intersección de estos dos fenómenos ---la evolución hacia arquitecturas modulares y la creciente preocupación por la eficiencia energética del software--- donde se sitúa la situación problemática que motiva esta investigación. La evidencia disponible sobre el impacto energético de la modularidad no es concluyente. Algunos estudios experimentales reportan que las arquitecturas modulares pueden reducir el consumo energético en escenarios de carga media y alta, gracias a una mejor utilización de los recursos disponibles y a la ejecución modular de los componentes~\cite{capuano2026comparative}. Sin embargo, otros trabajos advierten que la comunicación adicional entre servicios, la orquestación y los mecanismos de coordinación que exige un sistema modular pueden incrementar el consumo total de recursos, especialmente en sistemas pequeños o fuertemente acoplados, donde la sobrecarga de comunicación supera los beneficios de la ejecución distribuida~\cite{jagroep2017extending}.
+
+Esta falta de consenso no es casual: responde, en buena medida, a la heterogeneidad de las condiciones experimentales bajo las cuales se han desarrollado los estudios disponibles ---distintos tipos de aplicación, distintos niveles de carga, distintas infraestructuras de despliegue y distintas métricas de consumo energético---, lo cual dificulta la comparación directa de resultados y limita la construcción de un cuerpo de conocimiento consistente sobre el tema~\cite{araujo2024energy}. A ello se suma que, en la práctica profesional, las decisiones sobre el estilo arquitectónico de un sistema rara vez incorporan de manera explícita criterios de consumo energético, favoreciendo en su lugar criterios de escalabilidad, velocidad de desarrollo o alineación con tendencias de la industria~\cite{khan2020cloud}.
+
+Las consecuencias de esta situación no son menores. La adopción de una arquitectura ---monolítica o modular--- sin considerar su impacto energético puede traducirse en un consumo de recursos computacionales superior al necesario, con implicaciones ambientales derivadas del incremento de la huella de carbono asociada a la operación de la infraestructura de cómputo, así como implicaciones económicas relacionadas con los costos operativos de energía en entornos de nube~\cite{marimuthu2017green}. Estas consecuencias se agravan a medida que aumenta la escala de los sistemas desplegados y la frecuencia con la que se ejecutan bajo condiciones de alta demanda.
+
+Frente a este panorama, resulta necesario un abordaje investigativo que permita caracterizar, bajo condiciones experimentales controladas y reproducibles, la relación entre el estilo arquitectónico de un sistema de software y su consumo de recursos y energía. Lo que aún no se conoce con suficiente claridad ---el vacío de conocimiento que motiva esta investigación--- es bajo qué condiciones específicas de carga y de diseño una arquitectura modular resulta efectivamente más eficiente energéticamente que su equivalente monolítico, y en qué casos ocurre lo contrario. Comprender esta relación resulta indispensable para que los equipos de ingeniería de sistemas puedan tomar decisiones arquitectónicas informadas, no solo desde la perspectiva de la escalabilidad y la mantenibilidad, sino también desde la perspectiva de la sostenibilidad energética del software que desarrollan.
+
+En consecuencia, esta investigación se propone estudiar la relación entre el estilo arquitectónico de un sistema de software ---monolítico frente a modular--- y su consumo de recursos computacionales y energéticos, bajo condiciones y cargas de trabajo similares, con el fin de aportar evidencia experimental que contribuya a cerrar el vacío de conocimiento identificado.
+
+\section{Formulación del problema}
+\label{sec:formulacion}
+
+\subsection{Diagnóstico}
+\label{sec:diagnostico}
+
+La situación actual, de acuerdo con los síntomas y causas identificados en la sección~\ref{sec:sintomas} y desarrollados en la narrativa de la sección~\ref{sec:narrativa}, puede resumirse de la siguiente manera: las decisiones sobre el estilo arquitectónico de los sistemas de software ---monolítico o modular--- se adoptan predominantemente con base en criterios de escalabilidad, mantenibilidad y tendencias de la industria, sin una consideración sistemática de su impacto sobre el consumo de recursos computacionales y energéticos~\cite{khan2020cloud}. Esta omisión no responde a una falta absoluta de investigación sobre el tema ---existen estudios experimentales que comparan directamente el consumo energético entre arquitecturas monolíticas y modulares~\cite{capuano2026comparative}---, sino a la inconsistencia de los resultados disponibles, que varían según el tipo de aplicación, el nivel de carga y las condiciones de despliegue evaluadas~\cite{araujo2024energy}. En consecuencia, el diagnóstico central es que existe evidencia fragmentada y no concluyente sobre las condiciones bajo las cuales una arquitectura modular resulta energéticamente más eficiente que una arquitectura monolítica equivalente, lo cual limita la capacidad de los equipos de ingeniería de sistemas para tomar decisiones arquitectónicas informadas desde una perspectiva de sostenibilidad.
+
+\subsection{Pregunta de investigación}
+\label{sec:pregunta}
+
+A partir del diagnóstico y de la estrategia de investigación planteada como control del pronóstico (sección~\ref{sec:control}), se formula la siguiente pregunta de investigación:
+
+\begin{quote}
+\textit{¿Cómo cambia el consumo energético entre una arquitectura monolítica tradicional y una arquitectura de monolito modular bajo condiciones y cargas de trabajo similares?}
+\end{quote}
+
+Esta pregunta es actual, dado que responde a una discusión vigente dentro de la ingeniería de software sostenible; es viable, en la medida en que puede abordarse mediante un diseño experimental comparativo entre implementaciones equivalentes bajo ambos estilos arquitectónicos; es pertinente para el campo de la ingeniería de sistemas, pues se relaciona directamente con decisiones de diseño arquitectónico de aplicación práctica; es precisa, al delimitar explícitamente las variables de interés (tipo de arquitectura monolítica, condiciones y carga de trabajo, y consumo energético); es ética, al no involucrar riesgos para personas o poblaciones vulnerables; es medible, al referirse a variables cuantificables mediante instrumentos de monitoreo de recursos computacionales; y es coherente con el problema, los antecedentes y el vacío de conocimiento identificados a lo largo de este documento.
+
+\section{Consecuencias de no investigar}
+\label{sec:consecuencias}
+
+\subsection{Pronóstico}
+\label{sec:pronostico}
+
+De continuar esta situación sin ser estudiada de manera sistemática, es previsible que las decisiones sobre arquitectura de software sigan tomándose sin incorporar criterios energéticos explícitos, lo que podría traducirse en un consumo de recursos computacionales superior al necesario en un número indeterminado de sistemas, con las consiguientes implicaciones ambientales asociadas al incremento de la huella de carbono de la infraestructura de cómputo y las implicaciones económicas derivadas de mayores costos operativos de energía~\cite{marimuthu2017green}. Asimismo, es previsible que la brecha entre la investigación académica sobre software sostenible y la práctica profesional de diseño arquitectónico continúe ampliándose, en la medida en que los marcos conceptuales de eficiencia energética del software~\cite{kern2018sustainable,kipp2011green,kipp2012layered} no logren traducirse en criterios prácticos y verificables para la toma de decisiones. Es importante precisar que estas proyecciones se plantean como consecuencias razonablemente esperables a partir de la evidencia revisada, y no como hechos certeros o inevitables.
+
+\subsection{Control del pronóstico}
+\label{sec:control}
+
+Frente a este panorama, el control del pronóstico no consiste en proponer directamente una solución tecnológica definitiva, sino en plantear una estrategia de investigación que permita reducir la incertidumbre identificada. Dicha estrategia debe orientarse hacia:
+\begin{itemize}
+  \item la comparación experimental controlada entre implementaciones equivalentes de un mismo sistema bajo arquitectura monolítica tradicional y arquitectura de monolito modular;
+  \item la medición sistemática del consumo de recursos computacionales (CPU, memoria) y, cuando sea posible, del consumo energético asociado, bajo condiciones y cargas de trabajo similares para ambas arquitecturas;
+  \item la determinación, en condiciones controladas, de si existen diferencias en el consumo energético entre ambos estilos arquitectónicos;
+  \item el análisis de variables asociadas ---tipo de aplicación, nivel de acoplamiento, mecanismos de comunicación entre componentes--- que puedan explicar la variabilidad observada en estudios previos;
+  \item el diseño de un experimento reproducible que permita comparar los resultados obtenidos con los reportados en la literatura existente.
+\end{itemize}
+
+Esta estrategia de investigación es la que se concreta en la pregunta formulada en la sección~\ref{sec:pregunta}.
+
+\section{Delimitación}
+\label{sec:delimitacion}
+
+La pregunta se acota a dos formas de organizar un sistema que se despliega como una única unidad ---el monolito tradicional y el monolito modular---, por lo que las arquitecturas distribuidas, como los microservicios, quedan fuera de la comparación; la evidencia sobre ellas, revisada en los antecedentes, se emplea como referente del vacío de conocimiento y no como objeto de contraste. Asimismo, la investigación no busca demostrar que una arquitectura sea mejor que otra, sino determinar si existen diferencias en su consumo energético. La delimitación conceptual, técnica, espacial y temporal del estudio se detalla en el capítulo~\ref{cap:alcance}.
+
+De esta pregunta se derivan, en los capítulos siguientes, el objetivo general y los objetivos específicos, así como la hipótesis y las variables del proyecto; el diseño del experimento ---incluyendo las métricas y los instrumentos de medición--- se desarrolla en el capítulo~\ref{cap:diseno}.

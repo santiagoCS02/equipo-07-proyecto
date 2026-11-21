@@ -1,0 +1,70 @@
+== 1/5 Compilando ==
+== 2/5 Permisos RAPL (se pierden al reiniciar) ==
+== 3/5 Verificando equivalencia funcional ==
+EQUIVALENCIA FUNCIONAL OK (resultado=484797833033, estado=2270965816)
+== 4/5 Ajustes del sistema y calibración ==
+  trad: 985447 ops/s (1 hilo)
+  mod: 919576 ops/s (1 hilo)
+Operaciones por hilo en la ventana medida: 18391515
+== 5/5 Midiendo: 12 bloques (cada uno: reposo + 4 condiciones en orden aleatorio) ==
+--- bloque 1/12  [21:00:43] ---
+  [21:00:59] trad pesada
+  [21:01:31] mod pesada
+  [21:02:06] trad normal
+  [21:02:37] mod normal
+--- bloque 2/12  [21:03:10] ---
+  [21:03:25] mod pesada
+  [21:03:59] trad pesada
+  [21:04:32] trad normal
+  [21:05:03] mod normal
+--- bloque 3/12  [21:05:36] ---
+  [21:05:51] mod pesada
+  [21:06:26] trad normal
+  [21:06:57] trad pesada
+  [21:07:30] mod normal
+--- bloque 4/12  [21:08:03] ---
+  [21:08:18] mod normal
+  [21:08:50] mod pesada
+  [21:09:25] trad pesada
+  [21:09:57] trad normal
+--- bloque 5/12  [21:10:29] ---
+  [21:10:44] mod pesada
+  [21:11:18] trad pesada
+  [21:11:50] mod normal
+  [21:12:23] trad normal
+--- bloque 6/12  [21:12:55] ---
+  [21:13:10] trad normal
+  [21:13:41] mod normal
+  [21:14:14] mod pesada
+  [21:14:48] trad pesada
+--- bloque 7/12  [21:15:21] ---
+  [21:15:36] trad normal
+  [21:16:08] trad pesada
+  [21:16:40] mod pesada
+  [21:17:15] mod normal
+--- bloque 8/12  [21:17:47] ---
+  [21:18:03] mod normal
+  [21:18:35] trad normal
+  [21:19:07] mod pesada
+  [21:19:41] trad pesada
+--- bloque 9/12  [21:20:14] ---
+  [21:20:29] trad pesada
+  [21:21:01] trad normal
+  [21:21:33] mod normal
+  [21:22:06] mod pesada
+--- bloque 10/12  [21:22:40] ---
+  [21:22:55] mod normal
+  [21:23:28] mod pesada
+  [21:24:03] trad pesada
+  [21:24:35] trad normal
+--- bloque 11/12  [21:25:07] ---
+  [21:25:22] trad pesada
+  [21:25:54] trad normal
+  [21:26:26] mod normal
+  [21:26:58] mod pesada
+--- bloque 12/12  [21:27:33] ---
+  [21:27:48] trad normal
+  [21:28:20] trad pesada
+  [21:28:52] mod pesada
+  [21:29:27] mod normal
+Listo. Datos en resultados/datos.csv  ->  python3 analisis.py resultados/datos.csv

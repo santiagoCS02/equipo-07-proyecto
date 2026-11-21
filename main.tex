@@ -1,6 +1,5 @@
 \documentclass[12pt, letterpaper]{report}
 
-
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish,es-noquoting]{babel}
@@ -10,6 +9,7 @@
 \onehalfspacing
 
 \usepackage{mathptmx}
+\usepackage{amsmath}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
@@ -49,6 +49,12 @@
 \usepackage{fancyhdr}
 \pagestyle{plain}
 
+% Comando para la fuente al pie de tablas y figuras
+\newcommand{\fuente}[1]{%
+  \par\vspace{4pt}%
+  \noindent\footnotesize\textit{Fuente:} #1\par%
+}
+
 \begin{document}
 
 \begin{titlepage}
@@ -59,7 +65,7 @@
 {\MakeUppercase{Facultad de Ingeniería}}\\[0.2cm]
 {\MakeUppercase{Ingeniería de Sistemas y Computación}}\\[2.5cm]
 
-\textbf{\Large EFECTO DE UN ASISTENTE DE INTELIGENCIA ARTIFICIAL GENERATIVA EN EL TIEMPO DE DEPURACIÓN DE ERRORES DE SINTAXIS EN ESTUDIANTES NOVELES DE PROGRAMACIÓN}\\[0.5cm]
+\textbf{\Large RELACIÓN ENTRE LA ARQUITECTURA DE SOFTWARE (MONOLÍTICA Y MODULAR) Y EL CONSUMO/EFICIENCIA ENERGÉTICA: UNA PROPUESTA DE INVESTIGACIÓN COMPARATIVA}\\[0.5cm]
 \textit{\small Título provisional — se ajusta al formular la propuesta (Fase 3)}\\[2.5cm]
 
 \MakeUppercase{Autores}\\[0.4cm]
@@ -73,6 +79,8 @@ Documento elaborado en el marco del curso Metodología de la Investigación\\[0.
 Tunja, Colombia · 2026
 \end{titlepage}
 
+\input{capitulos/resumen.tex}
+
 \newpage
 \tableofcontents
 \newpage
@@ -81,18 +89,16 @@ Tunja, Colombia · 2026
 \listoffigures
 \newpage
 
-
 \input{capitulos/planteamiento_problema.tex}
-\input{capitulos/justificacion.tex} 
+\input{capitulos/justificacion.tex}
 \input{capitulos/objetivos.tex}
 \input{capitulos/alcance_investigacion.tex}
 \input{capitulos/formulacion_hipotesis.tex}
 \input{capitulos/variables.tex}
 \input{capitulos/marco_referencial.tex}
-\input{capitulos/diseno_metodologico.tex} 
+\input{capitulos/diseno_metodologico.tex}
 \input{capitulos/resultados_discusion.tex}
 \include{capitulos/conclusiones_recomendaciones.tex}
-
 
 \bibliographystyle{texstyles/IEEEtran}
 \nocite{*}

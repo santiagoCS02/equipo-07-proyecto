@@ -1,1 +1,137 @@
 \chapter{Resultados y discusión}
+\label{cap:resultados}
+
+\section{Descripción de los datos}
+\label{sec:descripcion-datos}
+
+Se obtuvieron las 12 mediciones previstas por condición (48 corridas) y 12 mediciones del equipo en reposo, sin fallos. El consumo en reposo fue de 1.96 W (paquete y DRAM; desviación de 0.003 W), y la temperatura del paquete se mantuvo entre 33 y $36\,^{\circ}\mathrm{C}$ durante toda la sesión, sin indicios de limitación térmica. La DRAM aportó cerca del 6--7\,\% de la energía total en todas las condiciones. Con un hilo, los \textit{checksums} de ambas arquitecturas coinciden, lo que confirma la equivalencia funcional; con dos hilos varían entre corridas, algo esperable porque el orden de los pedidos cambia.
+
+\section{Resultados por carga}
+\label{sec:resultados-carga}
+
+Las tablas~\ref{tab:resultados} y~\ref{tab:diferencia_relativa} presentan los estadísticos y las figuras~\ref{fig:energia-op} a~\ref{fig:potencia-media} muestran su distribución. En ambas cargas, el monolito modular consumió más energía por operación y tardó más en completar el mismo trabajo, mientras que la potencia media fue prácticamente la misma.
+
+\begin{table}[htbp]
+\centering
+\caption{Media y desviación estándar por arquitectura y carga ($n = 12$)}
+\label{tab:resultados}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+\textbf{Carga} & \textbf{Métrica} & \textbf{Tradicional} & \textbf{Modular} \\
+\midrule
+Normal & Energía por operación ($\mu$J/op) & 3.3707 (0.0010) & 3.5265 (0.0025) \\
+Normal & Energía neta ($\mu$J/op) & 1.3911 (0.0024) & 1.4618 (0.0028) \\
+Normal & Tiempo (s) & 18.602 (0.003) & 19.402 (0.012) \\
+Normal & Potencia media (W) & 3.3324 (0.0005) & 3.3428 (0.0007) \\
+\midrule
+Pesada & Energía por operación ($\mu$J/op) & 2.0171 (0.0018) & 2.1426 (0.0140) \\
+Pesada & Energía neta ($\mu$J/op) & 0.9876 (0.0014) & 1.0493 (0.0066) \\
+Pesada & Tiempo (s) & 19.349 (0.019) & 20.547 (0.135) \\
+Pesada & Potencia media (W) & 3.8347 (0.0008) & 3.8355 (0.0007) \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{figuras/fig_energia_por_operacion.png}
+\caption{Energía total por operación (paquete + DRAM, $\mu$J/op) por arquitectura y carga. Cajas: mediana y cuartiles; triángulo verde: media; círculos: valores atípicos ($n = 12$ por condición).}
+\label{fig:energia-op}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{figuras/fig_tiempo.png}
+\caption{Tiempo necesario para completar el mismo trabajo, por arquitectura y carga.}
+\label{fig:tiempo-trabajo}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{figuras/fig_potencia_media.png}
+\caption{Potencia media durante la ventana medida.}
+\label{fig:potencia-media}
+\end{figure}
+
+\section{Estabilidad y valores atípicos}
+\label{sec:estabilidad}
+
+La variabilidad fue muy baja y no hubo deriva entre bloques (figura~\ref{fig:estabilidad-bloques}), lo que respalda la aleatorización y el control térmico. Hay un único valor atípico visible: la condición modular con carga pesada en el bloque~5 (20.13 s y 2.10 $\mu$J/op), por debajo de los demás. No hay evidencia para excluirlo; al retirarlo, la diferencia relativa en esa condición pasa de 6.22\,\% a 6.41\,\% y el $p$ de Welch sigue siendo menor que $10^{-23}$, de modo que la conclusión no cambia. Ese valor explica además que la desviación del modular con carga pesada sea mayor que la de los demás grupos y que Shapiro-Wilk rechace su normalidad ($p < 10^{-4}$), por lo que en esa condición se privilegian Mann-Whitney y la prueba pareada.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figuras/fig_estabilidad_bloques.png}
+\caption{Energía por operación en cada bloque, en orden de ejecución.}
+\label{fig:estabilidad-bloques}
+\end{figure}
+
+\section{Diferencia relativa y decisión sobre \texorpdfstring{$H_0$}{H0}}
+\label{sec:diferencia-relativa}
+
+\begin{table}[htbp]
+\centering
+\caption{Diferencia relativa del modular respecto al tradicional y pruebas de contraste}
+\label{tab:diferencia_relativa}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}llrcrrr@{}}
+\toprule
+\textbf{Métrica} & \textbf{Carga} & \textbf{Dif. (\%)} & \textbf{IC 95\,\%} & \textbf{$p$ Welch} & \textbf{$p$ M-W} & \textbf{$p$ pareada} \\
+\midrule
+$\mu$J/op & Normal & $+4.62$ & $[4.58;\ 4.67]$ & $5.4 \times 10^{-26}$ & $3.7 \times 10^{-5}$ & $7.5 \times 10^{-21}$ \\
+Neta & Normal & $+5.08$ & $[4.92;\ 5.24]$ & $2.6 \times 10^{-26}$ & $3.7 \times 10^{-5}$ & $8.8 \times 10^{-20}$ \\
+Tiempo & Normal & $+4.30$ & $[4.26;\ 4.34]$ & $6.3 \times 10^{-24}$ & $3.6 \times 10^{-5}$ & $1.6 \times 10^{-21}$ \\
+Potencia & Normal & $+0.31$ & $[0.29;\ 0.33]$ & $1.9 \times 10^{-20}$ & $3.7 \times 10^{-5}$ & $2.0 \times 10^{-13}$ \\
+\midrule
+$\mu$J/op & Pesada & $+6.22$ & $[5.78;\ 6.66]$ & $2.7 \times 10^{-12}$ & $3.7 \times 10^{-5}$ & $2.2 \times 10^{-12}$ \\
+Neta & Pesada & $+6.24$ & $[5.81;\ 6.67]$ & $5.5 \times 10^{-13}$ & $3.7 \times 10^{-5}$ & $2.1 \times 10^{-12}$ \\
+Tiempo & Pesada & $+6.20$ & $[5.75;\ 6.64]$ & $2.6 \times 10^{-12}$ & $3.7 \times 10^{-5}$ & $2.3 \times 10^{-12}$ \\
+Potencia & Pesada & $+0.02$ & $[0.005;\ 0.039]$ & $0.015$ & $0.035$ & $0.057$ \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{figuras/fig_diferencia_relativa.png}
+\caption{Diferencia relativa de consumo del monolito modular respecto al tradicional, con intervalo de confianza del 95\,\%.}
+\label{fig:diferencia-relativa}
+\end{figure}
+
+\textbf{Decisión.} Con $\alpha = 0.05$, se rechaza $H_0$ en ambas cargas para la energía por operación, la energía neta y el tiempo: las tres pruebas coinciden y los intervalos de confianza no incluyen el cero. El modular consumió entre 4.6\,\% y 5.1\,\% más energía con carga normal y cerca de 6.2\,\% más con carga pesada. El $p$ de Mann-Whitney de $3.7 \times 10^{-5}$ se repite en varias filas porque los grupos no se solapan y es el valor más pequeño que esa prueba alcanza con $n = 12$ por grupo; es un límite de la prueba y no un error. La $d$ de Cohen resulta muy grande (entre 12 y 90) debido a la variabilidad mínima, por lo que no se interpreta con las etiquetas convencionales.
+
+\textbf{Potencia.} La diferencia de potencia es de 0.3\,\% con carga normal y de 0.02\,\% con carga pesada. En esta última las pruebas no coinciden (Welch y Mann-Whitney la detectan con $p < 0.05$ pero la pareada no, con $p = 0.057$), y en cualquier caso su magnitud es despreciable.
+
+\section{Discusión}
+\label{sec:discusion}
+
+\textbf{El modular tarda más con la misma potencia.} La energía es el producto de la potencia por el tiempo (sección~\ref{sec:marco-teorico}), y la diferencia observada se explica casi por completo por el tiempo: la energía por operación aumenta 4.6\,\% y el tiempo 4.3\,\% con carga normal, y 6.2\,\% ambos con carga pesada, mientras que la potencia no varía. El modular no gasta más vatios, sino que necesita más tiempo para realizar el mismo trabajo (el rendimiento pasa de 0.99 a 0.95 millones de operaciones por segundo con un hilo, y de 1.90 a 1.79 con dos). La hipótesis explicativa es que el modular realiza más trabajo de CPU por operación debido a la creación de DTO, el despacho de eventos y las llamadas a través de interfaces (sección~\ref{sec:marco-conceptual}); no se midió directamente, y confirmarlo requeriría un perfilado, que no se hizo.
+
+\textbf{Efecto de la carga pesada.} Con dos hilos, la energía por operación es menor que con uno en ambas arquitecturas (cerca de 2.0 frente a $3.4~\mu\text{J/op}$), pues el consumo base del equipo se reparte entre el doble de trabajo y el rendimiento escala de forma casi lineal (cerca de 1.9 veces). Es el efecto de proporcionalidad energética descrito en la sección~\ref{sec:marco-teorico}, independiente del estilo arquitectónico, y no debe leerse como un hallazgo sobre la arquitectura. La diferencia relativa del modular es algo mayor con carga pesada (6.2\,\% frente a 4.6\,\%); con dos núcleos y un equipo de bajo consumo no es posible determinar si responde a la carga o a la contención por recursos, y requeriría más niveles de carga.
+
+\textbf{Relación con los antecedentes.} Los porcentajes de este estudio no son comparables con el ahorro cercano a 5\,\% que Capuano et al.~\cite{capuano2026comparative} reportan para microservicios, porque aquellos comparan otra cosa: una distribución en servicios frente a un monolito, con aplicaciones reales y carga de red. Sí es coherente con la idea de que más fragmentación puede costar más energía, como encuentran Zhao et al.~\cite{zhao2025granularity} al aumentar la granularidad, y con la inconsistencia de resultados señalada por Araújo et al.~\cite{araujo2024energy}: el efecto de la modularidad depende de cómo se implemente y de dónde se mida. Este estudio aporta un punto de evidencia sobre el costo de modularizar dentro de un proceso, donde el modular fue más costoso.
+
+\textbf{Implicaciones para la sostenibilidad.} La diferencia es consistente, pero su relevancia práctica depende del contexto. En términos absolutos, equivale a unos 0.16 $\mu$J adicionales por operación con carga normal, es decir, unos 156 J por cada mil millones de operaciones (cerca de 0.04 Wh). Para un sistema pequeño es despreciable; a gran escala, o en sistemas donde el cómputo domine sobre la E/S, el efecto acumulado puede ser relevante. Dicho costo debe sopesarse con los beneficios de mantenibilidad de la modularidad, que este estudio no evalúa. Por ello, los resultados no indican que una arquitectura sea mejor, sino que existe un costo energético medible que puede incorporarse como criterio de decisión.
+
+\section{Limitaciones}
+\label{sec:limitaciones}
+
+Es una prueba de concepto sobre un banco de pruebas en memoria, sin red, HTTP, base de datos ni \textit{frameworks}; mide el costo de organizar el código en módulos dentro del proceso y no se extrapola directamente a un sistema en producción. Es esperable, pero no se midió, que en aplicaciones donde domina la E/S o la base de datos el efecto relativo sea menor.
+
+El monolito modular es una operacionalización propia (DTO, eventos internos y datos privados por módulo); otra forma de implementar la modularidad podría dar otra magnitud. La distribución de datos difiere entre versiones por diseño, lo cual forma parte de lo que se compara.
+
+El peso de la lógica de negocio (parámetro $\text{WORK} = 40$) influye en el tamaño del efecto: más lógica de negocio diluye el sobrecosto de la arquitectura. No se varió.
+
+RAPL mide el procesador y la DRAM, no el consumo total del equipo, y en varios procesadores se basa en modelos; los valores son comparables entre sí, no equivalentes al consumo medido en el enchufe. La energía neta depende de la estimación del reposo de cada bloque.
+
+Un solo equipo de bajo consumo, un solo JDK, una configuración de JVM, un recolector de basura (serial) y dos niveles de carga; la variabilidad medida corresponde a una máquina y una sesión, lo que da alta precisión pero no permite afirmar que otro equipo dé los mismos porcentajes.
+
+No se registraron la utilización de CPU ni el uso de memoria, indicadores previstos en la sección~\ref{sec:indicadores}.
+
+No se compara con microservicios, por lo que no pueden contrastarse directamente los porcentajes con los de la literatura.

@@ -62,9 +62,3 @@ python3 analisis.py resultados/datos.csv
 ```
 
 El análisis requiere Python con `numpy`, `pandas`, `scipy` y `matplotlib`.
-
-## Pendientes
-
-- Cifras completas del flujo PRISMA (sección 1.1.7).
-- Versión de Java y del kernel usados en la corrida (sección 8.4).
-- Instrumentos de fases anteriores (matriz de correlación, ficha de causas, diagrama de Ishikawa) en los anexos.

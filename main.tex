@@ -2,14 +2,37 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish,es-noquoting]{babel}
+\usepackage{textcomp}
+
+\IfFileExists{spanish.ldf}{%
+  \usepackage[spanish,es-noquoting,es-tabla]{babel}%
+  \addto\captionsspanish{%
+    \renewcommand{\contentsname}{Contenido}%
+    \renewcommand{\listtablename}{Índice de tablas}%
+    \renewcommand{\listfigurename}{Índice de figuras}%
+    \renewcommand{\tablename}{Tabla}%
+    \renewcommand{\figurename}{Figura}%
+    \renewcommand{\bibname}{Referencias}%
+  }%
+}{%
+  \usepackage[english]{babel}%
+  \hyphenpenalty=10000 \emergencystretch=3em \tolerance=2000%
+  \AtBeginDocument{%
+    \renewcommand{\contentsname}{Contenido}%
+    \renewcommand{\listtablename}{Índice de tablas}%
+    \renewcommand{\listfigurename}{Índice de figuras}%
+    \renewcommand{\tablename}{Tabla}%
+    \renewcommand{\figurename}{Figura}%
+    \renewcommand{\bibname}{Referencias}%
+    \renewcommand{\chaptername}{Capítulo}%
+  }%
+}
 
 \usepackage[left=4cm,right=2cm,top=3cm,bottom=3cm]{geometry}
 \usepackage{setspace}
 \onehalfspacing
 
 \usepackage{mathptmx}
-\usepackage{amsmath}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
@@ -21,11 +44,23 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{caption}
+\usepackage{chngcntr}
+\counterwithout{table}{chapter}
+\counterwithout{figure}{chapter}
+\usepackage{pdflscape}
+\usepackage[shortlabels,inline]{enumitem}
+\setlist{nosep}
 
-\captionsetup{font=small,labelfont=bf}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=below}
 
 \usepackage{cite}
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks,plainpages=false,pdfusetitle]{hyperref}
+\Urlmuskip=0mu plus 1mu
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\-}
+\makeatother
 \usepackage{titlesec}
 
 \titleformat{\chapter}[block]
@@ -33,6 +68,12 @@
   {\thechapter.}
   {0.5em}
   {\MakeUppercase}
+\titleformat{name=\chapter,numberless}[block]
+  {\normalfont\bfseries\Large\centering}
+  {}
+  {0pt}
+  {\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{1.5em}
 
 \titleformat{\section}
   {\normalfont\bfseries\large}
@@ -46,14 +87,14 @@
   {0.5em}
   {}
 
-\usepackage{fancyhdr}
 \pagestyle{plain}
+\setcounter{tocdepth}{2}
 
-% Comando para la fuente al pie de tablas y figuras
+\newcommand{\figura}[2]{\includegraphics[width=#2\linewidth]{figuras/#1}}
+
 \newcommand{\fuente}[1]{%
-  \par\vspace{4pt}%
-  \noindent\footnotesize\textit{Fuente:} #1\par%
-}
+  \par\vspace{0.3em}%
+  {\small\setstretch{1.0}\raggedright Fuente: #1\par}}
 
 \begin{document}
 
@@ -65,12 +106,11 @@
 {\MakeUppercase{Facultad de Ingeniería}}\\[0.2cm]
 {\MakeUppercase{Ingeniería de Sistemas y Computación}}\\[2.5cm]
 
-\textbf{\Large RELACIÓN ENTRE LA ARQUITECTURA DE SOFTWARE (MONOLÍTICA Y MODULAR) Y EL CONSUMO/EFICIENCIA ENERGÉTICA: UNA PROPUESTA DE INVESTIGACIÓN COMPARATIVA}\\[0.5cm]
-\textit{\small Título provisional — se ajusta al formular la propuesta (Fase 3)}\\[2.5cm]
+\textbf{\Large RELACIÓN ENTRE LA ARQUITECTURA DE SOFTWARE (MONOLÍTICA Y MODULAR) Y EL CONSUMO/EFICIENCIA ENERGÉTICA}\\[2.5cm]
 
 \MakeUppercase{Autores}\\[0.4cm]
 Barrera Romero Juan Diego\\[0.2cm]
-Castro Gómez Lui Miguel\\[0.2cm]
+Castro Gómez Luis Miguel\\[0.2cm]
 Corredor Silva Santiago\\[0.2cm]
 Galeano Tirado Juan Emmanuel
 
@@ -79,29 +119,33 @@ Documento elaborado en el marco del curso Metodología de la Investigación\\[0.
 Tunja, Colombia · 2026
 \end{titlepage}
 
-\input{capitulos/resumen.tex}
-
-\newpage
+\pagenumbering{roman}
 \tableofcontents
-\newpage
+\clearpage
 \listoftables
-\newpage
+\clearpage
 \listoffigures
-\newpage
+\clearpage
 
-\input{capitulos/planteamiento_problema.tex}
-\input{capitulos/justificacion.tex}
-\input{capitulos/objetivos.tex}
-\input{capitulos/alcance_investigacion.tex}
-\input{capitulos/formulacion_hipotesis.tex}
-\input{capitulos/variables.tex}
-\input{capitulos/marco_referencial.tex}
-\input{capitulos/diseno_metodologico.tex}
-\input{capitulos/resultados_discusion.tex}
-\include{capitulos/conclusiones_recomendaciones.tex}
+\pagenumbering{arabic}
 
+\input{capitulos/planteamiento_problema}
+\input{capitulos/justificacion}
+\input{capitulos/objetivos}
+\input{capitulos/alcance_investigacion}
+\input{capitulos/formulacion_hipotesis}
+\input{capitulos/variables}
+\input{capitulos/marco_referencial}
+\input{capitulos/diseno_metodologico}
+\input{capitulos/resultados_discusion}
+\input{capitulos/conclusiones_recomendaciones}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Referencias}
 \bibliographystyle{texstyles/IEEEtran}
-\nocite{*}
 \bibliography{referencias}
+
+\input{capitulos/anexos}
 
 \end{document}

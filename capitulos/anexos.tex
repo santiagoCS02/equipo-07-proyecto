@@ -1,0 +1,33 @@
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Anexos}
+\chapter*{Anexos}
+
+\section*{Anexo A. Material complementario del experimento}
+
+Los siguientes archivos, mencionados en el capítulo~\ref{cap:diseno}, se entregan junto con este documento en la carpeta \texttt{anexos/} y permiten reproducir el experimento y el análisis:
+\begin{itemize}
+  \item \texttt{Bench.java}: banco de pruebas con las dos implementaciones.
+  \item \texttt{correr.sh}: \textit{script} de ejecución por bloques.
+  \item \texttt{ejecutar.txt}: órdenes utilizadas para lanzar la corrida de 12 bloques.
+  \item \texttt{analisis.py}: \textit{script} de análisis estadístico y de generación de gráficas.
+  \item \texttt{corrida.log}: registro de la corrida, con la verificación de equivalencia funcional, la calibración y el orden aleatorio de las condiciones en cada bloque.
+  \item \texttt{resultados/datos.csv}: una fila por medición (48 corridas y 12 mediciones en reposo).
+  \item \texttt{resultados/resumen\_estadistico.csv}: medias, desviaciones, diferencias relativas, intervalos de confianza, \textit{p}-valores y $d$ de Cohen por carga y métrica.
+\end{itemize}
+
+\section*{Anexo B. Reproducción del experimento y del análisis}
+
+Con Java y los permisos de lectura de los contadores RAPL, la corrida completa se lanza desde la carpeta \texttt{anexos/} con:
+
+\begin{quote}
+\texttt{REPS=12 ./correr.sh}
+\end{quote}
+
+El análisis estadístico y las figuras se regeneran a partir de los datos medidos con:
+
+\begin{quote}
+\texttt{python3 analisis.py resultados/datos.csv}
+\end{quote}
+
+El \textit{script} de análisis requiere Python con las bibliotecas \texttt{numpy}, \texttt{pandas}, \texttt{scipy} y \texttt{matplotlib}.

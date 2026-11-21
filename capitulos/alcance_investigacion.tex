@@ -1,1 +1,14 @@
 \chapter{Alcance de la investigación}
+\label{cap:alcance}
+
+\textbf{Tipo de alcance.} La investigación tiene un enfoque cuantitativo, un diseño experimental y un alcance comparativo de tipo explicativo~\cite{hernandez2018metodologia}: determina si el consumo energético difiere entre el monolito tradicional y el monolito modular y, cuando encuentra diferencias, las atribuye al tipo de arquitectura, única variable manipulada. Propone una explicación de su origen, pero no la verifica.
+
+\textbf{Delimitación conceptual.} Se comparan únicamente dos formas de organizar un sistema que se despliega como una sola unidad; los microservicios y otras arquitecturas distribuidas quedan fuera de la comparación.
+
+\textbf{Delimitación técnica y espacial.} Se estudia un banco de pruebas en memoria, implementado en Java, que reproduce un sistema de tienda (catálogo, inventario, clientes, pedidos y pagos) en ambas arquitecturas, sin red, protocolo HTTP ni base de datos. La medición se realiza en un único portátil con procesador de bajo consumo, un solo entorno de ejecución y dos niveles de carga (uno y dos hilos).
+
+\textbf{Delimitación temporal.} Las mediciones corresponden a una sola sesión de unos 35 minutos, con 12 repeticiones por condición.
+
+\textbf{Variables y mediciones cubiertas.} Se mide la energía del procesador y de la memoria, el tiempo de ejecución, la potencia media y la energía por operación. No se registran la utilización de CPU ni el uso de memoria, ni se mide la energía en el enchufe.
+
+\textbf{Alcance de las conclusiones.} Los resultados responden la pregunta de investigación para este banco de pruebas y no se generalizan a aplicaciones en producción, a otros equipos ni a otras formas de implementar la modularidad. Tampoco se pretende establecer que una arquitectura sea mejor que otra: solo si su consumo energético difiere y en qué magnitud.

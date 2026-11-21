@@ -1,1 +1,80 @@
 \chapter{Marco referencial}
+\label{cap:marco}
+
+Este capítulo reúne los fundamentos que sustentan la investigación. Incluye los marcos obligatorios ---teórico, conceptual y estado del arte--- y los marcos opcionales histórico, normativo y tecnológico, cada uno limitado a los elementos que el proyecto emplea directamente.
+
+\section{Marco teórico}
+\label{sec:marco-teorico}
+
+\textbf{Modularidad y ocultamiento de información.} Parnas~\cite{parnas1972criteria} sostiene que un sistema debe descomponerse en módulos según las decisiones de diseño que cada uno oculta, de modo que los cambios internos de un módulo no afecten a los demás. Stevens, Myers y Constantine~\cite{stevens1974structured} complementan esta idea con los criterios de cohesión y acoplamiento: un buen diseño maximiza la cohesión dentro de cada módulo y minimiza el acoplamiento entre ellos. Estas teorías definen la diferencia entre los dos niveles de la variable independiente: el monolito tradicional permite dependencias libres entre componentes, mientras que el monolito modular las restringe mediante límites explícitos e interfaces públicas (sección~\ref{sec:var-indep}). Su relevancia para este estudio es que ambas teorías justifican la modularidad por la mantenibilidad y guardan silencio sobre su costo en tiempo de ejecución: cada interfaz, cada objeto de transferencia y cada evento intermedio exige trabajo adicional de CPU.
+
+\textbf{Relación entre energía, potencia y tiempo.} La energía que consume un sistema durante una tarea es el producto de su potencia media por el tiempo que tarda en completarla, $E = P \cdot t$. En los circuitos CMOS, la potencia se compone de una parte estática, presente aunque el equipo no trabaje, y una parte dinámica, proporcional a la actividad de conmutación~\cite{barroso2007proportional}. Esta relación permite descomponer cualquier diferencia de consumo entre dos arquitecturas en una diferencia de potencia, una diferencia de tiempo o ambas, y fundamenta el capítulo~\ref{cap:resultados}.
+
+\textbf{Proporcionalidad energética.} Barroso y Hölzle~\cite{barroso2007proportional} muestran que los servidores reales consumen una fracción importante de su potencia máxima incluso con muy poca carga, es decir, no son proporcionales a la energía que demandan. Por ello, aumentar la utilización reparte el consumo base entre más trabajo y reduce la energía por unidad de trabajo. Esta teoría explica por qué la carga con dos hilos resulta más eficiente por operación que la de un hilo, independientemente de la arquitectura, y evita interpretar ese efecto como un hallazgo sobre el estilo arquitectónico.
+
+\section{Marco conceptual}
+\label{sec:marco-conceptual}
+
+\textbf{Monolito tradicional.} Es un sistema construido y desplegado como una sola unidad, cuyos componentes comparten un mismo esquema de datos y pueden invocarse entre sí sin restricciones formales. Su ventaja es la baja sobrecarga de comunicación, porque una operación atraviesa el sistema mediante llamadas directas en memoria; su costo es el crecimiento desordenado de las dependencias, que dificulta el cambio y la comprensión del código~\cite{aldebagy2018comparative,newman2021microservices}.
+
+\textbf{Monolito modular.} Conserva la unidad de despliegue, pero organiza el código en módulos con responsabilidades acotadas, datos privados e interfaces públicas que regulan las dependencias~\cite{newman2021microservices}. En el enfoque de Spring Modulith~\cite{springmodulith2025}, los módulos se llaman por sus interfaces, intercambian datos mediante objetos de transferencia (DTO) inmutables y se notifican sucesos del dominio mediante eventos internos. Cada uno de esos mecanismos añade operaciones por solicitud: crear objetos intermedios, despachar eventos y atravesar capas de indirección. Ese costo adicional dentro del proceso es lo que este estudio busca medir, sin el efecto de la red que sí tienen los microservicios.
+
+\textbf{Consumo energético y eficiencia por unidad de trabajo.} Consumir más no equivale a ser menos eficiente: un sistema puede demandar más potencia y terminar antes. Por eso la comparación se hace a trabajo fijo y se expresa la eficiencia como energía por operación, de modo que dos arquitecturas se contrastan por la energía necesaria para realizar exactamente el mismo trabajo~\cite{kern2018sustainable}. Además se distingue la energía total de la energía neta, que descuenta el consumo del equipo en reposo y aísla la parte atribuible a la aplicación.
+
+\textbf{Medición mediante RAPL.} \textit{Running Average Power Limit} es la interfaz de Intel que estima la energía acumulada por dominios del procesador (paquete y memoria DRAM) mediante contadores accesibles desde el sistema operativo. Su validez depende de que se lean antes y después de la ventana medida y de que se corrija el desbordamiento del contador; además, estima solo el procesador y la memoria, no la pantalla, el disco ni la red, y en parte se basa en modelos, por lo que sirve para comparar condiciones entre sí y no para fijar el consumo absoluto en el enchufe~\cite{khan2018rapl,centofanti2024power}.
+
+\textbf{Banco de pruebas y equivalencia funcional.} Un banco de pruebas es un programa que contiene las dos implementaciones de un mismo sistema, ejecutado con las mismas operaciones. La comparación solo es válida si ambas versiones son funcionalmente equivalentes, lo cual se verifica antes de medir comprobando que, con un hilo, producen el mismo resultado y el mismo estado final. Esta prueba delimita lo que se compara: la organización del código y no la funcionalidad.
+
+\textbf{Calentamiento y ventana de medición.} En Java, el compilador \textit{just-in-time} optimiza el código durante la ejecución, de modo que las primeras operaciones son más lentas que las posteriores. Por eso se ejecuta una fase de calentamiento, no medida, antes de la ventana donde se leen los contadores; sin ella, la medición mezclaría el costo de la compilación con el costo de la arquitectura.
+
+\section{Estado del arte}
+\label{sec:estado-arte}
+
+\textbf{Definición y procedimiento.} El estado del arte es la revisión crítica de lo que otros investigadores han hecho para resolver la problemática: sus metodologías, experimentos y resultados, favorables o no, y las líneas que quedan abiertas para continuar. Se realizó delimitando una ventana de tres a cinco años (2021--2026) sobre las búsquedas descritas en la sección~\ref{sec:prisma}, extrayendo de cada trabajo su método, su resultado y su relación con este proyecto, y sintetizándolos en la tabla~\ref{tab:estado-arte}.
+
+\begin{table}[htbp]
+\centering
+\caption{Síntesis del estado del arte reciente (2021--2026)}
+\label{tab:estado-arte}
+\small
+\setstretch{1.0}
+\setlength{\parskip}{0pt}
+\begin{tabular}{@{}p{3cm}p{4.6cm}p{6.6cm}@{}}
+\toprule
+\textbf{Estudio} & \textbf{Metodología} & \textbf{Resultado y continuidad} \\
+\midrule
+Blinowski et al. (2022)~\cite{blinowski2022monolithic} & Comparación de rendimiento y escalabilidad de monolito y microservicios & El efecto depende del entorno de despliegue y de la carga; no mide energía \\[4pt]
+Funke et al. (2024)~\cite{funke2024tactics} & Evaluación experimental de tácticas de eficiencia energética en la industria & Aporta resultados y lecciones aprendidas sobre la evaluación experimental de tácticas energéticas en contexto industrial \\[4pt]
+Centofanti et al. (2024)~\cite{centofanti2024power} & Análisis de herramientas de código abierto para medir potencia en nubes con contenedores & Compara herramientas de medición de potencia; útil para elegir y declarar el instrumento \\[4pt]
+Araujo et al. (2024)~\cite{araujo2024energy} & Revisión sistemática sobre energía en microservicios & Hallazgos inconsistentes según las condiciones experimentales \\[4pt]
+Su, Li y Taibi (2024)~\cite{su2024microservice} & Revisión multivocal de la migración de microservicios a monolito & La modularidad distribuida no siempre aporta beneficios proporcionales \\[4pt]
+Zhao et al. (2025)~\cite{zhao2025granularity} & Experimento controlado con dos sistemas (Pet Clinic y Train Ticket) & Mayor granularidad aumentó el consumo en el sistema grande (en promedio 13\,\%); a mayor carga, mayor consumo \\[4pt]
+Xiao et al. (2025)~\cite{xiao2025tactics} & Experimento controlado con tres tácticas y tres patrones, y tres niveles de carga & Reducciones de hasta 5.6\,\% que dependen de la carga, con costos en otros atributos de calidad \\[4pt]
+Capuano et al. (2026)~\cite{capuano2026comparative} & Experimento con PetClinic y TicketMonster, prueba de Welch & Ahorro cercano a 5\,\% de los microservicios bajo carga media y alta \\
+\bottomrule
+\end{tabular}
+\fuente{elaboración propia a partir de las publicaciones citadas.}
+\end{table}
+
+\textbf{Metodologías.} Los trabajos recientes comparten un núcleo: experimentos controlados sobre aplicaciones de referencia de código abierto, varios niveles de carga y contraste estadístico de las diferencias~\cite{capuano2026comparative,zhao2025granularity,xiao2025tactics}. Las revisiones sistemáticas~\cite{araujo2024energy,su2024microservice} confirman que la diversidad de aplicaciones, infraestructuras y métricas es el principal obstáculo para integrar los resultados, tal como se planteó en el problema de investigación. En el plano de la medición, la evaluación de herramientas~\cite{centofanti2024power} y la discusión sobre RAPL~\cite{khan2018rapl} ofrecen criterios para elegir y declarar el instrumento y sus límites.
+
+\textbf{Resultados.} Los resultados son favorables y desfavorables según el caso. Capuano et al.~\cite{capuano2026comparative} y Xiao et al.~\cite{xiao2025tactics} reportan ahorros cercanos al 5\,\% bajo ciertas cargas o con ciertas técnicas, pero Zhao et al.~\cite{zhao2025granularity} encuentran que una descomposición más fina puede incrementar el consumo y que la relación depende de la escala del sistema. La conclusión común es que la carga y el contexto moderan el efecto y que no existe una respuesta universal.
+
+\textbf{Posibilidad de continuar.} Estos trabajos comparan microservicios con monolitos o variantes de microservicios; ninguno aísla el costo de modularizar dentro de un único proceso. Esta investigación continúa por ese camino: adopta del diseño de Capuano et al.~\cite{capuano2026comparative} el experimento controlado, el contraste de Welch y la medición a distintos niveles de carga, y de Zhao et al.~\cite{zhao2025granularity} la pregunta por la granularidad, llevándola al interior de la unidad de despliegue. Así, el resultado no compite con el de microservicios, sino que lo complementa.
+
+\section{Marco histórico}
+\label{sec:marco-historico}
+
+Hasta la década de 1970, los programas se construían como unidades únicas sin una disciplina de descomposición. La llamada crisis del software impulsó los criterios de modularidad de Parnas~\cite{parnas1972criteria} y de diseño estructurado~\cite{stevens1974structured}, y con ellos la idea de organizar el código para facilitar su cambio. En los años 2000, la arquitectura orientada a servicios y, hacia 2014, los microservicios llevaron la modularidad al plano de la distribución, motivados por la escalabilidad y por la autonomía de los equipos~\cite{aldebagy2018comparative,newman2021microservices}. Más recientemente, la experiencia con el costo operativo de los sistemas distribuidos ha renovado el interés por el monolito modular y por la migración inversa~\cite{su2024microservice}.
+
+El consumo energético no era un problema de diseño porque, durante décadas, la mejora del hardware compensó el costo de la ineficiencia del software: cada generación de procesadores ofrecía más desempeño con la misma potencia. Cuando esa mejora se desaceleró a mediados de la década de 2000 y la computación se concentró en centros de datos y servicios en la nube, el consumo del software pasó a ser un costo ambiental y económico visible~\cite{verdecchia2021green,marimuthu2017green}.
+
+\section{Marco normativo}
+\label{sec:marco-normativo}
+
+Ninguna norma colombiana regula el consumo energético del software de manera directa; la normativa aplicable establece el marco de eficiencia energética en que se inscribe este tipo de estudio. La Ley 697 de 2001 declara el uso racional y eficiente de la energía como asunto de interés social, público y de conveniencia nacional~\cite{ley697}. La Ley 1715 de 2014 regula la integración de energías renovables no convencionales y promueve la gestión eficiente de la energía~\cite{ley1715}, y la Ley 2099 de 2021 actualiza las disposiciones para la transición energética del país~\cite{ley2099}. En el plano técnico internacional, la especificación de intensidad de carbono del software, adoptada como norma ISO/IEC 21031:2024, ofrece una metodología para cuantificar las emisiones asociadas a la operación del software~\cite{iso21031}. Por último, al no involucrar personas ni datos personales, el estudio no requiere trámites de comité de ética ni de protección de datos.
+
+\section{Marco tecnológico}
+\label{sec:marco-tecnologico}
+
+El banco de pruebas está escrito en Java y se ejecuta sobre la máquina virtual de Java, con parámetros idénticos para ambas arquitecturas (memoria fija de 256 MB y recolector de basura serial), lo que reduce la variabilidad atribuible al recolector. La energía se lee de los contadores RAPL expuestos por el sistema operativo en la interfaz \textit{powercap}~\cite{khan2018rapl}. El equipo es un portátil con procesador Intel Celeron N4020 de dos núcleos, 3.4 GiB de RAM y Arch Linux, con el gobernador de CPU en modo de máximo rendimiento y la función turbo desactivada. El monolito modular sigue el estilo de módulos, interfaces y eventos internos que promueve Spring Modulith~\cite{springmodulith2025}, sin utilizar el framework. El análisis estadístico se realiza mediante un \textit{script} en Python.

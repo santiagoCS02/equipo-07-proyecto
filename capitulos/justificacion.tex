@@ -1,1 +1,10 @@
 \chapter{Justificación}
+\label{cap:justificacion}
+
+\textbf{Conveniencia y relevancia social.} El consumo energético de la infraestructura de cómputo crece de forma sostenida y su impacto ambiental y económico se agrava con la escala de los sistemas desplegados~\cite{marimuthu2017green,verdecchia2021green}. Aun así, la elección del estilo arquitectónico rara vez incorpora criterios energéticos~\cite{khan2020cloud}. Aportar evidencia empírica sobre si la organización interna de un sistema ---monolito tradicional o monolito modular--- modifica su consumo energético ofrece a los equipos de ingeniería de sistemas un criterio adicional, medible y reproducible para decidir.
+
+\textbf{Valor teórico.} La literatura es fragmentada y no concluyente~\cite{araujo2024energy,capuano2026comparative}, y los estudios comparativos se concentran en la oposición monolito--microservicios, de modo que la comparación entre dos formas de organizar una única unidad de despliegue carece de evidencia. Esta investigación contribuye a cerrar parcialmente ese vacío al aislar el efecto de la modularidad interna del efecto de la distribución en servicios (sección~\ref{sec:var-indep}), bajo condiciones explícitas que permiten contrastar resultados con los de otros estudios.
+
+\textbf{Utilidad metodológica.} El proyecto documenta un banco de pruebas con equivalencia funcional verificada, trabajo fijo, aleatorización por bloques y medición de energía mediante contadores del procesador, que otros grupos pueden replicar, ajustar y extender.
+
+\textbf{Viabilidad y ética.} El estudio se ejecuta en un único equipo de bajo consumo, con software libre, sin costos de infraestructura y en una sola sesión de medición; no involucra personas ni datos personales, por lo que no genera riesgos éticos.

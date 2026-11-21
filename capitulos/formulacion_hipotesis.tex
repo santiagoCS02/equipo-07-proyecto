@@ -1,1 +1,40 @@
 \chapter{Formulación de hipótesis}
+\label{cap:hipotesis}
+
+Este capítulo responde anticipadamente a la pregunta de investigación mediante una hipótesis contrastable.
+
+\section{Fundamento}
+
+La literatura revisada indica que las decisiones de diseño arquitectónico tienen efectos medibles sobre el consumo de recursos computacionales~\cite{jagroep2017extending,seo2008framework}, pero también que los resultados comparativos entre arquitecturas no son consistentes entre sí y dependen de las condiciones experimentales~\cite{araujo2024energy}. Ante esta falta de consenso, la evidencia disponible no permite anticipar en qué sentido podría diferir el consumo energético entre las arquitecturas comparadas. Por ello, la hipótesis se plantea sin dirección: afirma la existencia de una relación, no la superioridad de ninguna de las dos formas de organización.
+
+\section{Relación central}
+
+La relación que se somete a contraste es la siguiente:
+
+\begin{center}
+\textit{Tipo de arquitectura monolítica} $\longrightarrow$ \textit{Consumo energético del software}
+\end{center}
+
+\section{Hipótesis de trabajo (\texorpdfstring{$H_1$}{H1})}
+
+\begin{quote}
+Bajo condiciones y cargas de trabajo similares, el tipo de arquitectura monolítica ---monolito tradicional o monolito modular--- se relaciona con el consumo energético del software, de modo que este difiere entre ambas arquitecturas.
+\end{quote}
+
+\section{Hipótesis nula (\texorpdfstring{$H_0$}{H0})}
+
+\begin{quote}
+Bajo condiciones y cargas de trabajo similares, el tipo de arquitectura monolítica no se relaciona con el consumo energético del software, de modo que este no difiere entre el monolito tradicional y el monolito modular.
+\end{quote}
+
+De forma sintética, si $\mu_T$ y $\mu_M$ representan el consumo energético del software bajo el monolito tradicional y bajo el monolito modular, respectivamente, las hipótesis se expresan como:
+\[
+H_0:\ \mu_T = \mu_M \qquad\qquad H_1:\ \mu_T \neq \mu_M
+\]
+
+\section{Verificabilidad y falsabilidad}
+\label{sec:falsabilidad}
+
+La hipótesis es verificable porque enuncia una consecuencia observable: si el tipo de arquitectura monolítica se relaciona con el consumo energético, las mediciones realizadas sobre ambas implementaciones, bajo condiciones y cargas de trabajo similares, deberán mostrar diferencias que excedan la variabilidad esperada entre repeticiones. Es falsable porque puede ser refutada por la evidencia: si las mediciones no muestran diferencias distinguibles de dicha variabilidad, no habrá sustento para rechazar $H_0$ y $H_1$ quedará sin respaldo empírico. Los criterios estadísticos con los cuales se tomará esta decisión se definirán en el diseño experimental.
+
+Cualquiera de los resultados posibles ---mayor consumo en una arquitectura, mayor consumo en la otra, o ausencia de diferencias--- es informativo para el propósito de la investigación, coherente con el objetivo general, que consiste en determinar si existen diferencias y no en demostrar la superioridad de alguna de las dos arquitecturas.

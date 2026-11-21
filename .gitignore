@@ -4,6 +4,7 @@
 *.aux
 *.lof
 *.log
+!anexos/corrida.log
 *.lot
 *.out
 *.toc

@@ -9,8 +9,7 @@ equipo-07-proyecto/
 ├── .gitignore
 ├── README.md
 ├── main.tex                     documento principal
-├── main.pdf                     PDF compilado
-├── referencias.bib              35 referencias (estilo IEEE)
+├── referencias.bib              
 ├── texstyles/
 │   └── IEEEtran.bst
 ├── capitulos/
